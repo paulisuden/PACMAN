@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 import csv
 import os
 
-
 def load_q_table(filename="q_table.csv"):
     q_table = defaultdict(lambda: np.zeros(4))
     if os.path.exists(filename):
@@ -55,11 +54,13 @@ class CropObservation(ObservationWrapper):
 
 ######################################################## MAKE ENVIRONMENT ########################################################
 
-def make_env(apply_wrappers=True):
-    env = gym.make("ALE/Pacman-v5", difficulty=1)
-    if apply_wrappers:
-        env = CropObservation(env, bottom=38)           # crop 
-        env = ResizeObservation(env, shape=(80,80))     # resize 
+def make_env(render):
+    if render:
+        env = gym.make("ALE/Pacman-v5", render_mode="human")
+    else:
+        env = gym.make("ALE/Pacman-v5")
+    env = CropObservation(env, bottom=38)           # crop 
+    env = ResizeObservation(env, shape=(84,84))     # resize 
     return env
 
 ######################################################## EXTRACT FEATURES ########################################################
@@ -71,37 +72,28 @@ def show_local_view(local_view):
     plt.axis('off') 
     plt.show()
 
-GHOST_COLORS = {
-    #'red': np.array([200, 72, 72]),
-    'pink': np.array([252, 144, 200]),
-    #'blue': np.array([84, 138, 209]),
-    #'orange': np.array([198, 151, 52]),
-    #'scared': np.array([132, 210, 222])
-}
+GHOST_COLOR = np.array([252, 144, 200])
 
-PELLET_COLORS = {
-    '1': np.array([161, 141, 134]), 
-    '2': np.array([122, 109, 149]), 
-    '3': np.array([181, 157, 127]), 
-    '4': np.array([174, 152, 129])
-}
+PELLET_COLORS = [
+    np.array([161, 141, 134]), 
+    np.array([122, 109, 149]), 
+    np.array([181, 157, 127]), 
+    np.array([174, 152, 129])]
 
 PACMAN_COLORS = [
-    [233, 208, 147],
-    [157, 142, 159],
-    [191, 171, 154],
-    [252, 224, 144],
-    [90, 84, 170],
-    [206, 183, 139],
-    [147, 134, 158],
-    [239, 213, 146],
-    [214, 191, 150],
-    [189, 170, 154],
-    [113, 104, 166],
-    [169, 150, 148],
-    [131, 118, 154],
-]
-PACMAN_COLORS = [np.array(c) for c in PACMAN_COLORS]
+    np.array([233, 208, 147]),
+    np.array([157, 142, 159]),
+    np.array([191, 171, 154]),
+    np.array([252, 224, 144]),
+    np.array([90, 84, 170]),
+    np.array([206, 183, 139]),
+    np.array([147, 134, 158]),
+    np.array([239, 213, 146]),
+    np.array([214, 191, 150]),
+    np.array([189, 170, 154]),
+    np.array([113, 104, 166]),
+    np.array([169, 150, 148]),
+    np.array([131, 118, 154])]
 
 WALL_COLORS = [
     np.array([223, 192, 111]),
@@ -126,13 +118,12 @@ def count_color(zone, color_rgb, tolerance):
 
 def count_all_ghosts(zone):
     total = 0
-    for color in GHOST_COLORS.values():
-        total += count_color(zone, color,20)
+    total += count_color(zone, GHOST_COLOR, 20)
     return total
 
 def count_pellets(zone):
     total = 0
-    for color in PELLET_COLORS.values():
+    for color in PELLET_COLORS:
         total += count_color_excluding_multiple(
             zone,
             color_rgb=color,
@@ -207,10 +198,10 @@ learning_rate = 0.1
 discount_factor = 0.95
 
 epsilon = 1.0
-epsilon_decay = 0.992
+epsilon_decay = 0.999
 epsilon_min = 0.01
 
-episodes = 5000
+episodes = 1
 actions = [1, 2, 3, 4]  
 reward_list = []
 penalty_list = []
@@ -219,15 +210,13 @@ q_table = load_q_table("q_table.csv")
 
 pacman_found_list = []
 
-plt.ion()
-
 for episode in range(episodes):
 
     print(f"Episode: {episode+1}")
 
-    render = (episode + 1) % 1000 == 0
-    #render = True
-    env = make_env()
+    #render = (episode + 1) % 1000 == 0
+    render = True
+    env = make_env(render)
     obs, _ = env.reset()
     state = extract_features(obs)
     done = False
@@ -241,7 +230,7 @@ for episode in range(episodes):
             stuck = 0
             action = epsilon_greedy(state)
         else:
-            stuck = -3
+            stuck = -1
             action = random.choice(actions)
 
         next_obs, reward, terminated, truncated, info = env.step(action)
@@ -256,14 +245,21 @@ for episode in range(episodes):
 
         # penalties
         reward_penalty = -1 if reward == 0 else 2
-        lives_penalty = -5 if info['lives'] == 0 else 0
-        ghost_penalty = -10 if state[action - 1] == 0 else 1
+        #lives_penalty = -5 if info['lives'] == 0 else 0
+        if state[action - 1] == 0:
+            ghost_penalty = -10 
+        elif state[action - 1] == 1:
+            ghost_penalty = 5
+        else:
+            ghost_penalty = 10
 
-        reward_q_table = reward + ghost_penalty + lives_penalty + reward_penalty + stuck
+        reward_q_table = reward + ghost_penalty + reward_penalty + stuck
 
         # update q-table
         best_next = float(np.max(q_table[next_state]))
-        q_table[state][action - 1] += learning_rate * (reward_q_table + discount_factor * best_next - q_table[state][action - 1])
+        q_table[state][action - 1] = round(
+        q_table[state][action - 1] + learning_rate * (reward_q_table + discount_factor * best_next - 
+                                                                    q_table[state][action - 1]), 3)
 
         state = next_state
         obs = next_obs  
@@ -271,13 +267,6 @@ for episode in range(episodes):
         last_reward = total_reward
 
         penalty_list.append(reward_q_table)
-
-        if render:
-            plt.imshow(obs)
-            plt.title(f"Episodio {episode+1}")
-            plt.axis("off")
-            plt.pause(0.001)
-            plt.clf()
 
     env.close()
     reward_list.append(total_reward)
@@ -290,8 +279,6 @@ for episode in range(episodes):
         print("Penalty mean: ", avg_penalty )
 
 
-plt.ioff()
-
 plt.figure(figsize=(10, 5))
 plt.plot(reward_list, label="Recompensa por episodio")
 plt.xlabel("Episodio")
@@ -301,7 +288,6 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 plt.savefig("histogram_q_learning_agent.png")
-plt.show()
 
 # save q table 
 with open('q_table.csv', mode='w', newline='') as file:
