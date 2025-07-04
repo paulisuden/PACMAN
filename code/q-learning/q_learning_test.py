@@ -6,9 +6,9 @@ from gymnasium import ObservationWrapper
 from gymnasium.spaces import Box
 from gymnasium.wrappers import ResizeObservation
 import matplotlib.pyplot as plt
+import pandas as pd
 import csv
 import os
-import time
 
 def load_q_table(filename="q_table.csv"):
     q_table = defaultdict(lambda: np.zeros(4))
@@ -16,9 +16,9 @@ def load_q_table(filename="q_table.csv"):
         print("archivo encontrado")
         with open(filename, mode='r') as f:
             reader = csv.reader(f)
-            next(reader)  
+            next(reader)  # jump header
             for row in reader:
-                state = eval(row[0]) 
+                state = eval(row[0])  # convert a string "(1, 0, 0, 1)" to a tuple
                 values = list(map(float, row[1:]))
                 q_table[state] = np.array(values)
     else:
@@ -67,14 +67,7 @@ def make_env(render):
     env = ResizeObservation(env, shape=(84,84))     # resize 
     return env
 
-######################################################## EXTRACT FEATURES ########################################################
-
-# to ckeck the crop
-def show_local_view(local_view):
-    plt.imshow(local_view)
-    plt.title("Local View centrada en Pac-Man")
-    plt.axis('off') 
-    plt.show()
+######################################################## EXTRACT FEATURES #########################################################
 
 GHOST_COLOR = np.array([252, 144, 200])
 
@@ -131,7 +124,7 @@ def is_the_wall(zone):
         total += count_color_excluding_multiple(
             zone,
             color_rgb=color,
-            tolerance=10,
+            tolerance=25,
             excluded_colors=EXCLUDED_COLORS, 
             exclude_tol=15
         )
@@ -165,7 +158,7 @@ def extract_features(obs):
     center_x = x - left
 
     # Directional zones
-    step = 5 
+    step = 5  # o 1 o 3, según resolución y tamaño
     up_zone    = local_view[center_y - step:center_y, center_x - 1:center_x + 2]
     down_zone  = local_view[center_y + 1:center_y + 1 + step, center_x - 1:center_x + 2]
     left_zone  = local_view[center_y - 1:center_y + 2, center_x - step:center_x]
@@ -190,27 +183,26 @@ def extract_features(obs):
     #print(features)
     return tuple(features)
 
+
 ######################################################## EPSILON_GREEDY ########################################################
 
-def epsilon_greedy(state):
-    if random.uniform(0, 1) < epsilon:
-        return random.choice(actions)
-    else:
+def epsilon_greedy(state, num):
+    if num == 0:
         return actions[np.argmax(q_table[state])]
+    else:
+        #devuelvo el segundo valor mayor
+        q_values = q_table[state]
+        sorted_indices = np.argsort(q_values)[::-1]
+        return actions[sorted_indices[1]]
 
 ######################################################## MAIN PROGRAM ########################################################
-start = time.time()
-learning_rate = 0.1
-discount_factor = 0.95
 
-epsilon = 1.0
-epsilon_decay = 0.999
-epsilon_min = 0.01
-
-episodes = 10000
+episodes = 15
 actions = [1, 2, 3, 4]  
+
 reward_list = []
-penalty_list = []
+lives_list = []
+results = []
 
 q_table = load_q_table("q_table.csv")
 
@@ -219,89 +211,70 @@ pacman_found_list = []
 for episode in range(episodes):
 
     print(f"Episode: {episode+1}")
-
-    #render = (episode + 1) % 1000 == 0
     render = False
     env = make_env(render)
     obs, _ = env.reset()
-    state = extract_features(obs)
     done = False
     randomA = False
     total_reward = 0
-
+    steps = 0
+    stuck = 0
+    state = extract_features(obs)
+    second_action = False
     while not done:
 
-        """if randomA == False: 
+        if second_action: 
+            action = epsilon_greedy(state, 1)
             stuck = 0
-            action = epsilon_greedy(state)
-        else:
-            stuck = -1
-            action = random.choice(actions)"""
+        else: action = epsilon_greedy(state, 0)
 
-        action = epsilon_greedy(state)
-
-        next_obs, reward, terminated, truncated, info = env.step(action)
+        obs, reward, terminated, truncated, info = env.step(action)
         done = terminated or truncated
-        next_state = extract_features(next_obs)
+        new_state = extract_features(obs)
+
+        if state == new_state and state != (1, 2, 2, 1): stuck += 1
+        else: stuck = 0
         
-        # in case of being stuck, take a random action
-        if state == next_state: randomA = True
-        else: randomA = False
-    
+        if stuck >= 2: second_action = True
+        else: second_action = False
+
         total_reward += reward
+        state = new_state
 
-        # penalties
-        if state[action - 1] == 0:
-            ghost_penalty = -10 
-        elif state[action - 1] == 1:
-            ghost_penalty = 5
-        else:
-            ghost_penalty = 10
+    lives = info["lives"]
+    if lives > 0: win = 1 
+    else: win = 0
 
-        reward_q_table = reward + ghost_penalty
-
-        # update q-table
-        best_next = float(np.max(q_table[next_state]))
-        q_table[state][action - 1] = round(
-        q_table[state][action - 1] + learning_rate * (reward_q_table + discount_factor * best_next - 
-                                                                    q_table[state][action - 1]), 3)
-
-        state = next_state
-        obs = next_obs  
-
-        penalty_list.append(reward_q_table)
-
+    lives_list.append(lives)
+    results.append({
+        "episode": episode + 1,
+        "score": total_reward,
+        "lives_left": lives,
+        "win": win
+    })
     env.close()
-    reward_list.append(total_reward)
-    epsilon = max(epsilon_min, epsilon * epsilon_decay)
-
-    if (episode + 1) % 10 == 0:
-        avg_reward = np.mean(reward_list[-10:])
-        avg_penalty = np.mean(penalty_list[-10:])
-        print(f"→ Episodio {episode+1} | Promedio: {avg_reward:.2f} | Epsilon: {epsilon:.3f}")
-        print("Penalty mean: ", avg_penalty )
 
 
-plt.figure(figsize=(10, 5))
-plt.plot(reward_list, label="Recompensa por episodio")
-plt.xlabel("Episodio")
-plt.ylabel("Recompensa")
-plt.title("Evolución de la recompensa durante el entrenamiento")
-plt.grid(True)
-plt.legend()
+df = pd.DataFrame(results)
+df.to_csv("barplot_q_learning_results.csv", index=False)
+
+plt.figure(figsize=(14, 4))
+episodes_range = df["episode"]
+plt.subplot(1, 3, 1)
+plt.bar(episodes_range, df["score"], color="skyblue", edgecolor="black")
+plt.title("Score")
+plt.xlabel("Episode")
+plt.ylabel("Score")
+plt.xticks(episodes_range)
+
+plt.subplot(1, 3, 3)
+plt.bar(episodes_range, df["lives_left"], color="green", edgecolor="black")
+plt.title("Lives Left")
+plt.xlabel("Episode")
+plt.ylabel("Lives Left")
+plt.xticks(episodes_range)
+
 plt.tight_layout()
-plt.savefig("histogram_q_learning_agent.png")
+plt.savefig("barplot_q_learning.png")
+plt.show()
 
-# save q table 
-with open('q_table.csv', mode='w', newline='') as file:
-    writer = csv.writer(file)
-    writer.writerow(['state', 'action_1', 'action_2', 'action_3', 'action_4'])  
-    
-    for state, action_values in q_table.items():
-        writer.writerow([state] + list(action_values))
-
-end = time.time()
-
-total_time = end - start
-print("pacman found: ", np.mean(pacman_found_list))
-print("total time: ", total_time)
