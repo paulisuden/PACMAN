@@ -1,4 +1,4 @@
-# Modos y dificultades
+# Modos y dificultades para Pacman-v5
 
 Es posible especificar distintos *flavors* del entorno utilizando los argumentos `difficulty` y `mode`.
 Un *flavor* es una combinación de un modo de juego y un nivel de dificultad.
