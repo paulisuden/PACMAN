@@ -22,10 +22,10 @@ class CustomReward(Wrapper):
         if reward > 0:
             #aumento recompensa por fantasmas
             if any(x <= reward <= x+4 for x in [20, 40, 80, 160]):
-                reward = 1.1
+                reward = 1
             #aumento recompensa por puntos chicos
             elif reward < 5:
-                reward = 0.35
+                reward = 0.3
             #aumento recompensa por puntos grandes
             elif reward == 5:
                 reward = 0.4
