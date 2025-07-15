@@ -1,29 +1,35 @@
 import gymnasium as gym
 from stable_baselines3 import DQN
+from stable_baselines3.common.callbacks import EvalCallback
+from stable_baselines3.common.monitor import Monitor
 from GreyScaleObs import GreyScaleObs
 from CustomReward import CustomReward
 import matplotlib.pyplot as plot
 from gymnasium.wrappers import ResizeObservation, FrameStack
 from datetime import datetime
 import numpy
+import gc
 import torch
 import os
 from CustomRewardMetrics import CustomRewardMetrics
 
-print(torch.version.hip) 
-print(torch.cuda.is_available()) 
+#print(torch.version.hip) 
+#print(torch.cuda.is_available()) 
 date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 def applyWrappers(env, option="train"):
     if option == "train":
+        env = Monitor(env)
         env = CustomReward(env)
     else:
+        env = Monitor(env)
         env = CustomRewardMetrics(env)
     env = GreyScaleObs(env)
     env = ResizeObservation(env, (84, 84))
     env = FrameStack(env, num_stack=4)
     return env
 
-"""env = gym.make("ALE/Pacman-v5", frameskip=4, render_mode="human")
+"""
+env = gym.make("ALE/Pacman-v5", frameskip=4, render_mode="human")
 while True:
     
     obs, _ = env.reset()
@@ -36,72 +42,99 @@ while True:
     env.close()
 """
 
-"""
 #Train con DQN 
+
 env = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4, render_mode="rgb_array"))
+evalCallbackEnv = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4, render_mode="rgb_array"), option="test")
 
-model = DQN("CnnPolicy", env = env, buffer_size= 200000, batch_size = 32, verbose=1, exploration_fraction=0.15, tensorboard_log="./tensorboardDQNPacman/" + date, device="cuda")
+evalCallBack = EvalCallback(evalCallbackEnv, eval_freq=100000, deterministic=True, n_eval_episodes=15, best_model_save_path="./evalResults/4/", log_path="./logs/")
+model = DQN("CnnPolicy", env = env, buffer_size= 200000, batch_size = 32, verbose=1, learning_rate=5e-5, exploration_fraction=0.15, exploration_final_eps=0.05, tensorboard_log="./tensorboardDQNPacman/" + date, device="cuda")
 
-model.learn(total_timesteps=2000000)
+model.learn(total_timesteps=12000000, callback=evalCallBack)
 model.save("pacmanDqn" + date)
-"""
 
-"""
-#Test
-print("Directorio actual:", os.getcwd())
-env = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4, render_mode="human"))
-model = DQN.load("pacmanDqn2MNewReward2", env=env)
-
-obs, _ = env.reset(seed=2025)
-done = False
-
-while not done:
-    action, _ = model.predict(numpy.array(obs), deterministic=True)
-    #print(action)
-    obs, reward, terminated, truncated, info = env.step(action)
-    #if (reward != 0 and reward != 1 and reward != 2):
-    #    print(reward)
-    #    input()
-    done = terminated or truncated
 env.close()
+del model
+del env
+evalCallbackEnv.close()
+del evalCallbackEnv
+del evalCallBack
+gc.collect()
+torch.cuda.empty_cache()
+
+
+#Test con renderización
 """
-
-
-#Para extraer métricas, NO se renderiza
-iter = 101
-env = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4, render_mode=None), option="test")
-model = DQN.load("/home/tomas/Desktop/PacmanRL/DQN/pacmanDqn2MNewReward3.zip", env=env)
-rewardsVector = []
-obs, _ = env.reset(seed=2025)
-
-for i in range(1, iter):
-    rewardsSum = 0
-    obs, _ = env.reset()
+env = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4, render_mode="human"), option="test")
+model = DQN.load("./evalResults/pacmanDqn2025-07-09_03-13-38", env=env)
+print("El directorio actual es ", os.getcwd())
+lista = []
+for i in range(0, 1):
+    #Test
+    obs, _ = env.reset(seed=2025)
     done = False
-
+    sum = 0
     while not done:
         action, _ = model.predict(numpy.array(obs), deterministic=True)
         #print(action)
         obs, reward, terminated, truncated, info = env.step(action)
-        rewardsSum += reward
+        sum = sum + reward
         #if (reward != 0 and reward != 1 and reward != 2):
         #    print(reward)
         #    input()
         done = terminated or truncated
     if info["lives"] > 0:
-        print("Winner") 
-    rewardsVector.append(rewardsSum)
+        lista.append(i)
+        print(lista)
 env.close()
+print(lista)
+"""
 
-sum = 0
-for i in rewardsVector:
-    sum += i
-sum = sum / len(rewardsVector)
-print(sum)
-x = list(range(1, iter))
-plot.bar(x, rewardsVector)
-plot.xlabel("Episodio")
-plot.ylabel("Reward alcanzada")
-plot.title("Reward alcanzado por episodio")
-os.makedirs("graficos", exist_ok=True)
-plot.savefig("graficos/rewards2MNew3.png")
+#Para extraer métricas, NO se renderiza
+"""
+env = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4, render_mode=None), option="test")
+
+for nombre in os.listdir("./results8"):
+    ruta = os.path.join("./results8", nombre)
+    print(nombre)
+    iter = 101
+    model = DQN.load("/home/tomas/Desktop/PacmanRL/DQN/results8/" + nombre, env=env)
+    rewardsVector = []
+    obs, _ = env.reset(seed=2025)
+    #print(nombre)
+    for i in range(1, iter):
+        rewardsSum = 0
+        obs, _ = env.reset()
+        done = False
+        steps = 0
+        while not done:
+            steps += 1
+            action, _ = model.predict(numpy.array(obs), deterministic=True)
+            #print(action)
+            obs, reward, terminated, truncated, info = env.step(action)
+            rewardsSum += reward
+            #if (reward != 0 and reward != 1 and reward != 2):
+            #    print(reward)
+            #    input()
+            done = terminated or truncated
+        if info["lives"] > 0:
+            print("Ganó usando ", steps, " pasos y una recompensa de ", rewardsSum )
+        rewardsVector.append(rewardsSum)
+
+    sum = 0
+    for i in rewardsVector:
+        sum += i
+    sum = sum / len(rewardsVector)
+    print(sum)
+    print(max(rewardsVector))
+    x = list(range(1, iter))
+    plot.bar(x, rewardsVector)
+    plot.xlabel("Episodio")
+    plot.ylabel("Reward alcanzada")
+    plot.title("Reward alcanzado por episodio")
+    os.makedirs("graficos", exist_ok=True)
+    os.makedirs("graficos/tests15", exist_ok=True)
+    plot.savefig("graficos/tests15/rewards" + nombre + ".png")
+    plot.close()
+    env.close()
+"""

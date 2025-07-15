@@ -5,6 +5,7 @@ class CustomReward(Wrapper):
     def __init__(self, environment):
             super().__init__(environment)
             self.lives = None
+            self.stepsWithoutReward = 0
 
     def reset(self, **kwargs):
             obs, info = self.env.reset(**kwargs)
@@ -19,25 +20,29 @@ class CustomReward(Wrapper):
         
         # detecto si las vidas actuales son diferentes a las almacenadas
         if reward > 0:
-            reward = reward * 0.8
+            #aumento recompensa por fantasmas
+            if any(x <= reward <= x+4 for x in [20, 40, 80, 160]):
+                reward = 1.1
             #aumento recompensa por puntos chicos
-            if reward < 5:
-                reward = reward * 1
+            elif reward < 5:
+                reward = 0.35
             #aumento recompensa por puntos grandes
             elif reward == 5:
-                reward = reward * 1
+                reward = 0.4
             #aumento recompensa por fruta
             elif reward == 100:
                 reward = 0
-            #aumento recompensa si hubiese algun reward mayor a 161
-            elif reward > 161:
-                reward = reward * 1
-            #aumento recompensa por comer fantasmas
+            #aumento recompensa por algún bonus
             else:
-                reward = reward * 1
+                print(reward)
+                reward = 0
+        elif reward == 0:
+            self.stepsWithoutReward += 1
+            if self.stepsWithoutReward >= 5:
+                reward = -0.05
+                self.stepsWithoutReward = 0
         if livesNew < self.lives:
-            reward -= 50
+            reward -= 1
             self.lives = livesNew
-            
 
         return obs, reward, terminated, truncated, info
