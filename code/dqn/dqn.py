@@ -10,8 +10,9 @@ from datetime import datetime
 import numpy
 import gc
 import torch
+import csv
 import os
-from CustomRewardMetrics import CustomRewardMetrics
+from CustomRewardDefinitiveMetrics import CustomRewardDefinitiveMetrics
 
 #print(torch.version.hip) 
 #print(torch.cuda.is_available()) 
@@ -22,12 +23,30 @@ def applyWrappers(env, option="train"):
         env = CustomReward(env)
     else:
         env = Monitor(env)
-        env = CustomRewardMetrics(env)
+        env = CustomRewardDefinitiveMetrics(env)
     env = GreyScaleObs(env)
     env = ResizeObservation(env, (84, 84))
     env = FrameStack(env, num_stack=4)
     return env
 
+def plotStats(ylabel, title, iter, vector, filename):
+    x = list(range(1, iter))
+    plot.bar(x, vector)
+    plot.xlabel("Episodio")
+    plot.ylabel(ylabel)
+    plot.title(title)
+    os.makedirs("graficos", exist_ok=True)
+    plot.savefig("graficos/" + filename + ".png")
+    plot.close()
+
+def plotBoxAndWhiskers(vector, ylabel, filename, iter, title):
+    x = list(range(1, iter))
+    plot.boxplot(vector, vert=True)
+    plot.ylabel(ylabel)
+    plot.title(title)
+    os.makedirs("graficos", exist_ok=True)
+    plot.savefig("graficos/boxplot_" + filename + ".png")
+    plot.close()
 """
 env = gym.make("ALE/Pacman-v5", frameskip=4, render_mode="human")
 while True:
@@ -43,7 +62,7 @@ while True:
 """
 
 #Train con DQN 
-
+"""
 env = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4, render_mode="rgb_array"))
 evalCallbackEnv = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4, render_mode="rgb_array"), option="test")
 
@@ -62,7 +81,7 @@ del evalCallBack
 gc.collect()
 torch.cuda.empty_cache()
 
-
+"""
 #Test con renderización
 """
 env = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4, render_mode="human"), option="test")
@@ -138,3 +157,75 @@ for nombre in os.listdir("./results8"):
     plot.close()
     env.close()
 """
+
+
+env = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4), option="test")
+
+for nombre in os.listdir("./tests/bestResultsDQN"):
+    ruta = os.path.join("./tests/bestResultsDQN", nombre)
+    print(nombre)
+    iter = 101
+    model = DQN.load(ruta, env=env)
+    rewardsVector = []
+    ghostsList = []
+    pointsList = []
+    bigPointsList = []
+    stepsList = []
+    obs, _ = env.reset(seed=2025)
+    #print(nombre)
+    for i in range(1, iter):
+        rewardsSum = 0
+        obs, _ = env.reset()
+        done = False
+        while not done:
+            action, _ = model.predict(numpy.array(obs), deterministic=True)
+            #print(action)
+            obs, reward, terminated, truncated, info = env.step(action)
+            #if (reward != 0 and reward != 1 and reward != 2):
+            #    print(reward)
+            #    input()
+            done = terminated or truncated
+        totalSteps = info.get("totalSteps")
+        points = info.get("points")
+        bigPoint = info.get("bigPoint")
+        ghosts = info.get("ghosts")
+        rewardsSum = ghosts * 5 + points + bigPoint * 3
+        if info["lives"] > 0:
+            print("Ganó usando ", totalSteps, " pasos y una recompensa de ", rewardsSum )
+        rewardsVector.append(rewardsSum)
+        ghostsList.append(ghosts)
+        pointsList.append(points)
+        bigPointsList.append(bigPoint)
+        stepsList.append(totalSteps)
+
+    print(max(rewardsVector))
+    
+    plotStats("Reward", "Reward alcanzada por episodio", iter, rewardsVector, "rewardsDQN" + nombre)
+    plotStats("Ghosts", "Fantasmas comidos por episodio", iter, ghostsList, "ghostsDQN" + nombre)
+    plotStats("Points", "Puntos comidos por episodio", iter, pointsList, "pointsDQN" + nombre)
+    plotStats("Big points", "Puntos grandes comidos por episodio", iter, bigPointsList, "bigPointsDQN" + nombre)
+    plotStats("Steps", "Pasos dados por episodio", iter, stepsList, "stepsDQN" + nombre)
+    plotBoxAndWhiskers(rewardsVector, "Reward", "rewardsDQN" + nombre, iter, "Boxplot de reward por episodio")
+    plotBoxAndWhiskers(ghostsList, "Ghosts", "ghostsDQN" + nombre, iter, "Boxplot de fantasmas comidos por episodio")
+    plotBoxAndWhiskers(pointsList, "Points", "pointsDQN" + nombre, iter, "Boxplot de puntos comidos por episodio")
+    plotBoxAndWhiskers(bigPointsList, "Big Points", "bigPointsDQN" + nombre, iter, "Boxplot de puntos grandes comidos por episodio")
+    plotBoxAndWhiskers(stepsList, "Steps", "stepsDQN" + nombre, iter, "Boxplot de pasos dados por episodio")
+
+    os.makedirs("graficos", exist_ok=True)
+    with open("graficos/meansDQN" + nombre + ".csv", mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Métrica", "Promedio"])
+        writer.writerow(["Reward", sum(rewardsVector) / len(rewardsVector)])
+        writer.writerow(["Ghosts", sum(ghostsList) / len(ghostsList)])
+        writer.writerow(["Points", sum(pointsList) / len(pointsList)])
+        writer.writerow(["Big Points", sum(bigPointsList) / len(bigPointsList)])
+        writer.writerow(["Steps", sum(stepsList) / len(stepsList)])
+
+    with open("graficos/resultsDQN" + nombre + ".csv", mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Episodio", "Reward", "Ghosts", "Points", "Big Points", "Steps"])
+        for i in range(len(rewardsVector)):
+            writer.writerow([i + 1, rewardsVector[i], ghostsList[i], pointsList[i], bigPointsList[i], stepsList[i]])
+    env.close()
+
+

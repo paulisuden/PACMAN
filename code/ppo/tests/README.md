@@ -4,7 +4,7 @@ Todos los entornos han sido entrenados utilizando 2 millones de timesteps. Solo 
 
 Se intentó premiar la ganancia de puntos a la vez que se penalizaba la muerte. En el caso de PPO, en estas primeras pruebas se utilizaron las recompensas que se habían encontrado óptimas en el DQN. Se realizaron pruebas cambiando los hiperparámetros.
 ## Caso parámetros default:
-El resultado para esta configuración (promedio de la suma de rewards de 100 ejecuciones) es de X y la recompensa máxima fue de aproximadamente X
+El resultado para esta configuración (promedio de la suma de rewards de 100 ejecuciones) es de 82.54 y la recompensa máxima fue de aproximadamente 102.0
 ## Caso 1
     - n_steps=128
     - batch_size=256 
@@ -16,7 +16,7 @@ El resultado para esta configuración (promedio de la suma de rewards de 100 eje
     - vf_coef=0.25
     - learning_rate=1.5e-4
     - max_grad_norm=0.5
-El resultado para esta configuración (promedio de la suma de rewards de 100 ejecuciones) es de X y la recompensa máxima fue de aproximadamente X
+El resultado para esta configuración (promedio de la suma de rewards de 100 ejecuciones) es de 68 y la recompensa máxima fue de aproximadamente 88
 
 ## Caso 2
     - n_steps=1024
@@ -29,7 +29,7 @@ El resultado para esta configuración (promedio de la suma de rewards de 100 eje
     - vf_coef=0.5
     - learning_rate=2.5e-4
     - max_grad_norm=0.5
-El resultado para esta configuración (promedio de la suma de rewards de 100 ejecuciones) es de X y la recompensa máxima fue de aproximadamente X
+El resultado para esta configuración (promedio de la suma de rewards de 100 ejecuciones) es de 117 y la recompensa máxima fue de aproximadamente 158
 
 ## Caso 3
     - n_steps=1536,
