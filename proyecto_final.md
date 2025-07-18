@@ -51,13 +51,9 @@
       - [Q-learning](#q-learning-2)
       - [DQN](#dqn-1)
       - [PPO](#ppo-1)
-        - [Entorno en modo 0 (Normal)](#entorno-en-modo-0-normal)
-        - [Entorno en modo 2 (Fácil)](#entorno-en-modo-2-fácil)
-        - [Entorno en modo 5 (Difícil)](#entorno-en-modo-5-difícil)
   - [Análisis y Discusión de Resultados](#análisis-y-discusión-de-resultados)
   - [Conclusiones Finales](#conclusiones-finales)
   - [Bibliografía](#bibliografía)
-  - [\[10\] Farama Foundation. (s.f.) *Ale documentation*. https://ale.farama.org/](#10-farama-foundation-sf-ale-documentation-httpsalefaramaorg)
 
 ---
 
@@ -222,21 +218,24 @@ Resultados elevados indican que el agente aprendió efectivamente a sobrevivir u
 ##
 ### Herramientas y entornos
 Para el desarrollo del proyecto se utilizaron diversas herramientas con diferentes versiones. 
-Se utilizó el lenguaje de programación Python en su versión X.
+Se utilizó el lenguaje de programación **Python** en su versión 3.10.11.
 
-Con respecto al entorno, se utilizó ALE-py [10] versión X junto a Gymnasium en su versión X. Específicamente se hizo uso de "Pacman-v5". Se investigó acerca de "MsPacman-v5" pero se seleccionó el primero debido a su simplicidad visual y técnica, pues este tenía menos acciones posibles y las características visuales eran menos complejas. Para el entrenamiento se utilizó el modo 0 y para las pruebas se utilizaron los modos 0, 2 y 5. El modo 2 enlentece a los fantasmas mientras que el modo 5 los acelera.
+Con respecto al entorno, se utilizó **ALE-py** [10] versión 0.8.1 junto a **Gymnasium** en su versión 0.29.1 y **AutoROM** en su versión 0.6.1. Específicamente se hizo uso de "Pacman-v5". Se investigó acerca de "MsPacman-v5" pero se seleccionó el primero debido a su simplicidad visual y técnica, pues este tenía menos acciones posibles y las características visuales eran menos complejas. Para el entrenamiento se utilizó el modo 0 y para las pruebas se utilizaron los modos 0, 2 y 5. El modo 2 enlentece a los fantasmas mientras que el modo 5 los acelera.
 
-Se utilizaron las implementaciones de PPO y DQN de Stable-baselines3 en su versión X.
+Se utilizaron las implementaciones de PPO y DQN de **Stable-baselines3** en su versión 2.6.0. Para poder realizar los entrenamientos con GPU se hizo uso del software **ROCm** en su versión 6.3 debido a la compatibilidad con tarjetas de video AMD.
 
-Para el control de versiones y colaboración se utilizo Git y Github.
+Para el control de versiones y colaboración se utilizo **Git** y **Github**.
 
-Por último, para realizar los gráficos se utilizo Matplotlib.  
+Por último, para realizar los gráficos se utilizo **Matplotlib**.  
 
 ---
 ### Estrategia de entrenamiento
 Se realizaron los entrenamientos de los modelos de Q-learning, DQN, PPO. En los 3 casos se utilizaron diferentes configuraciones por lo que se presentarán en sus respectivas secciones. 
 
+---
+
 #### Q-learning  
+--- 
 
 #### DQN
 Se realizaron diferentes pruebas para determinar las recompensas y los hiperparámetros definitivos [Ver resultados de pruebas](code/dqn/tests/README.md). Estos fueron:  
@@ -257,6 +256,8 @@ Se realizaron diferentes pruebas para determinar las recompensas y los hiperpar�
 - batch_size = 32  
 
 Para entrenar el modelo se utilizaron 12.000.000 de timesteps.
+
+--- 
 
 #### PPO
 Se realizaron diferentes pruebas para determinar las recompensas y los hiperparámetros definitivos [Ver resultados de pruebas](code/ppo/tests/README.md).  Estos fueron:  
@@ -283,6 +284,8 @@ Se realizaron diferentes pruebas para determinar las recompensas y los hiperpar�
 
 Para entrenar el modelo se utilizaron 12.000.000 de timesteps.  
 
+--- 
+
 ### Descripción de los experimentos
 Se realizaron 3 tipos de experimentos. Los mismos consistieron en la ejecución de los modelos en 3 variaciones del entorno. Esto se realizó de esta manera ya que de esta forma no solo se probaría en exactamente el mismo entorno que se usó para entrenar y los agentes verían características no vistas durante el entrenamiento. Gracias a esto, podemos analizar la capacidad de los mismos para generalizar y no limitamos el análisis al entorno que ya conocen.  
 
@@ -290,59 +293,156 @@ Para los experimentos se realizaron 100 ejecuciones por cada algoritmo (Random, 
 
 Con estas 100 ejecuciones de cada caso se obtuvieron las métricas mencionadas anteriormente y se analizarán en la siguiente sección. Particularmente, con estos indicadores se buscó evaluar que tan buenos fueron los modelos. Para ello, se tomó en cuenta el objetivo del proyecto, es decir, cuán cerca estuvieron de ganar. Sin embargo, también se midieron otros aspectos, por ejemplo, su capacidad de supervivencia, la cantidad de veces que se ganó o el nivel de agresividad mediante la ingestión de fantasmas.
 
+--- 
 
 ### Resultados
 Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.  
 
 #### Random
 
+---
 #### Q-learning
 
-#### DQN
+---
+#### DQN  
+**Tabla resumen de métricas obtenidas**
 
 | Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
 |-----------------------|-----------------|-------|--------|--------|---------|
 | Modo 0   | 161.54             | 124.5   | 4.96 | 1191.78 | 0.02 |
-| Modo 2  | ----         | ---- | ---- | ---- | ---- |
-| Modo 5   | ----            | ----  | ---- | ---- | ---- |
+| Modo 2  | 143.92         | 118.17 | 2.81 | 1265.32 | 0.0 |
+| Modo 5   | 153.71            | 122.92  | 3.74 | 1302.16 | 0.02 |  
 
-<p align="center">
-  <img src="code/dqn/graficos/rewardsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/rewardsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/rewardsDQNpacmanDqn12Million.png" width="30%" />
-</p>
 
 **Resultados de métrica integradora en 100 episodios**  
-![Métrica integradora](code/dqn/graficos/rewardsDQNpacmanDqn12Million.zip.png)
+
+<p align="center">
+  <img src="code/dqn/graficos/mode0/rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/rewardsDQNpacmanDqn12Million.png" width="30%" />
+</p>
+
 
 **Cantidad de puntos chicos ingeridos en 100 episodios**  
-![Puntos chicos](code/dqn/graficos/pointsDQNpacmanDqn12Million.zip.png)
+<p align="center">
+  <img src="code/dqn/graficos/mode0/pointsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/pointsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/pointsDQNpacmanDqn12Million.png" width="30%" />
+</p>
 
 **Cantidad de pasos dados en 100 episodios**  
-![Pasos dados](code/dqn/graficos/stepsDQNpacmanDqn12Million.zip.png)
+<p align="center">
+  <img src="code/dqn/graficos/mode0/stepsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/stepsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/stepsDQNpacmanDqn12Million.png" width="30%" />
+</p>
 
 **Cantidad de fantasmas ingeridos en 100 episodios**  
-![Fantasmas](code/dqn/graficos/ghostsDQNpacmanDqn12Million.zip.png)
+<p align="center">
+  <img src="code/dqn/graficos/mode0/ghostsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/ghostsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/ghostsDQNpacmanDqn12Million.png" width="30%" />
+</p>
 
-**Boxplot de métrica integradora en 100 episodios**  
-![Métrica integradora](code/dqn/graficos/boxplot_rewardsDQNpacmanDqn12Million.zip.png)
+**Boxplots de métricas integradoras en 100 episodios**  
+<p align="center">
+  <img src="code/dqn/graficos/mode0/boxplot_rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_rewardsDQNpacmanDqn12Million.png" width="30%" />
+</p>
 
-**Boxplot de puntos chicos ingeridos en 100 episodios**  
-![Puntos chicos](code/dqn/graficos/boxplot_pointsDQNpacmanDqn12Million.zip.png)
+**Boxplots de puntos chicos ingeridos en 100 episodios**  
+<p align="center">
+  <img src="code/dqn/graficos/mode0/boxplot_pointsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_pointsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_pointsDQNpacmanDqn12Million.png" width="30%" />
+</p>
 
-**Boxplot de pasos dados en 100 episodios**  
-![Pasos dados](code/dqn/graficos/boxplot_stepsDQNpacmanDqn12Million.zip.png)
+**Boxplots de pasos dados en 100 episodios**  
+<p align="center">
+  <img src="code/dqn/graficos/mode0/boxplot_stepsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_stepsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_stepsDQNpacmanDqn12Million.png" width="30%" />
+</p>
 
-**Boxplot de fantasmas ingeridos en 100 episodios**  
-![Fantasmas](code/dqn/graficos/boxplot_ghostsDQNpacmanDqn12Million.zip.png)
+**Boxplots de fantasmas ingeridos en 100 episodios**  
+<p align="center">
+  <img src="code/dqn/graficos/mode0/boxplot_ghostsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_ghostsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_ghostsDQNpacmanDqn12Million.png" width="30%" />
+</p>  
+
+----
+
 #### PPO
-##### Entorno en modo 0 (Normal)
+**Tabla resumen de métricas obtenidas**
 
-##### Entorno en modo 2 (Fácil)
+| Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
+|-----------------------|-----------------|-------|--------|--------|---------|
+| Modo 0   | 156.55             | 127.22   | 3.4 | 1302.78 | 0.03 |
+| Modo 2  | 147.48         | 120.3 | 3.24 | 1400.26 | 0.01 |
+| Modo 5   | 149.41            | 120.88  | 3.33 | 1148.24 | 0.00 |  
 
-##### Entorno en modo 5 (Difícil)
+
+**Resultados de métrica integradora en 100 episodios**  
+
+<p align="center">
+  <img src="code/ppo/graficos/mode0/rewardsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode2/rewardsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode5/rewardsPPObest_model12Million.png" width="30%" />
+</p>
 
 
+**Cantidad de puntos chicos ingeridos en 100 episodios**  
+<p align="center">
+  <img src="code/ppo/graficos/mode0/pointsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode2/pointsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode5/pointsPPObest_model12Million.png" width="30%" />
+</p>
+
+**Cantidad de pasos dados en 100 episodios**  
+<p align="center">
+  <img src="code/ppo/graficos/mode0/stepsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode2/stepsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode5/stepsPPObest_model12Million.png" width="30%" />
+</p>
+
+**Cantidad de fantasmas ingeridos en 100 episodios**  
+<p align="center">
+  <img src="code/ppo/graficos/mode0/ghostsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode2/ghostsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode5/ghostsPPObest_model12Million.png" width="30%" />
+</p>
+
+**Boxplots de métricas integradoras en 100 episodios**  
+<p align="center">
+  <img src="code/ppo/graficos/mode0/boxplot_rewardsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode2/boxplot_rewardsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode5/boxplot_rewardsPPObest_model12Million.png" width="30%" />
+</p>
+
+**Boxplots de puntos chicos ingeridos en 100 episodios**  
+<p align="center">
+  <img src="code/ppo/graficos/mode0/boxplot_pointsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode2/boxplot_pointsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode5/boxplot_pointsPPObest_model12Million.png" width="30%" />
+</p>
+
+**Boxplots de pasos dados en 100 episodios**  
+<p align="center">
+  <img src="code/ppo/graficos/mode0/boxplot_stepsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode2/boxplot_stepsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode5/boxplot_stepsPPObest_model12Million.png" width="30%" />
+</p>
+
+**Boxplots de fantasmas ingeridos en 100 episodios**  
+<p align="center">
+  <img src="code/ppo/graficos/mode0/boxplot_ghostsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode2/boxplot_ghostsPPObest_model12Million.png" width="30%" />
+  <img src="code/ppo/graficos/mode5/boxplot_ghostsPPObest_model12Million.png" width="30%" />
+</p>  
+
+---
 ## Análisis y Discusión de Resultados
 
 
@@ -372,4 +472,11 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 \[9] OpenAI. (s.f.). *Proximal Policy Optimization — Spinning Up*. [https://spinningup.openai.com/en/latest/algorithms/ppo.html](https://spinningup.openai.com/en/latest/algorithms/ppo.html)
 
 \[10] Farama Foundation. (s.f.) *Ale documentation*. [https://ale.farama.org/](https://ale.farama.org/)
+
+\[11] Hugging Face. (s.f.). *Q-Learning*. [https://huggingface.co/learn/deep-rl-course/unit2/q-learning](https://huggingface.co/learn/deep-rl-course/unit2/q-learning)
+
+\[12] Hugging Face. (s.f.). *Proximal Policy Optimization (PPO). [https://huggingface.co/blog/deep-rl-ppo](https://huggingface.co/blog/deep-rl-ppo)
+
+\[13] S. Russell and P. Norvig, *Artificial Intelligence: A Modern Approach*, 3rd ed. Upper Saddle River, NJ, USA: Prentice Hall, 2010.
+
 ---
