@@ -47,6 +47,13 @@
       - [PPO](#ppo)
     - [Descripción de los experimentos](#descripción-de-los-experimentos)
     - [Resultados](#resultados)
+      - [Random](#random)
+      - [Q-learning](#q-learning-2)
+      - [DQN](#dqn-1)
+      - [PPO](#ppo-1)
+        - [Entorno en modo 0 (Normal)](#entorno-en-modo-0-normal)
+        - [Entorno en modo 2 (Fácil)](#entorno-en-modo-2-fácil)
+        - [Entorno en modo 5 (Difícil)](#entorno-en-modo-5-difícil)
   - [Análisis y Discusión de Resultados](#análisis-y-discusión-de-resultados)
   - [Conclusiones Finales](#conclusiones-finales)
   - [Bibliografía](#bibliografía)
@@ -285,7 +292,55 @@ Con estas 100 ejecuciones de cada caso se obtuvieron las métricas mencionadas a
 
 
 ### Resultados
+Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.  
 
+#### Random
+
+#### Q-learning
+
+#### DQN
+
+| Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
+|-----------------------|-----------------|-------|--------|--------|---------|
+| Modo 0   | 161.54             | 124.5   | 4.96 | 1191.78 | 0.02 |
+| Modo 2  | ----         | ---- | ---- | ---- | ---- |
+| Modo 5   | ----            | ----  | ---- | ---- | ---- |
+
+<p align="center">
+  <img src="code/dqn/graficos/rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/rewardsDQNpacmanDqn12Million.png" width="30%" />
+</p>
+
+**Resultados de métrica integradora en 100 episodios**  
+![Métrica integradora](code/dqn/graficos/rewardsDQNpacmanDqn12Million.zip.png)
+
+**Cantidad de puntos chicos ingeridos en 100 episodios**  
+![Puntos chicos](code/dqn/graficos/pointsDQNpacmanDqn12Million.zip.png)
+
+**Cantidad de pasos dados en 100 episodios**  
+![Pasos dados](code/dqn/graficos/stepsDQNpacmanDqn12Million.zip.png)
+
+**Cantidad de fantasmas ingeridos en 100 episodios**  
+![Fantasmas](code/dqn/graficos/ghostsDQNpacmanDqn12Million.zip.png)
+
+**Boxplot de métrica integradora en 100 episodios**  
+![Métrica integradora](code/dqn/graficos/boxplot_rewardsDQNpacmanDqn12Million.zip.png)
+
+**Boxplot de puntos chicos ingeridos en 100 episodios**  
+![Puntos chicos](code/dqn/graficos/boxplot_pointsDQNpacmanDqn12Million.zip.png)
+
+**Boxplot de pasos dados en 100 episodios**  
+![Pasos dados](code/dqn/graficos/boxplot_stepsDQNpacmanDqn12Million.zip.png)
+
+**Boxplot de fantasmas ingeridos en 100 episodios**  
+![Fantasmas](code/dqn/graficos/boxplot_ghostsDQNpacmanDqn12Million.zip.png)
+#### PPO
+##### Entorno en modo 0 (Normal)
+
+##### Entorno en modo 2 (Fácil)
+
+##### Entorno en modo 5 (Difícil)
 
 
 ## Análisis y Discusión de Resultados
