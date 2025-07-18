@@ -159,7 +159,7 @@ for nombre in os.listdir("./results8"):
 """
 
 
-env = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4), option="test")
+env = applyWrappers(gym.make("ALE/Pacman-v5", frameskip=4, mode=5), option="test")
 
 for nombre in os.listdir("./tests/bestResultsDQN"):
     ruta = os.path.join("./tests/bestResultsDQN", nombre)
@@ -171,6 +171,8 @@ for nombre in os.listdir("./tests/bestResultsDQN"):
     pointsList = []
     bigPointsList = []
     stepsList = []
+    wins = []
+    winrate = 0
     obs, _ = env.reset(seed=2025)
     #print(nombre)
     for i in range(1, iter):
@@ -197,35 +199,42 @@ for nombre in os.listdir("./tests/bestResultsDQN"):
         pointsList.append(points)
         bigPointsList.append(bigPoint)
         stepsList.append(totalSteps)
+        if points >= 126:
+            wins.append(1)
+            winrate += 1
+        else:
+            wins.append(0)
+        
 
     print(max(rewardsVector))
-    
-    plotStats("Reward", "Reward alcanzada por episodio", iter, rewardsVector, "rewardsDQN" + nombre)
-    plotStats("Ghosts", "Fantasmas comidos por episodio", iter, ghostsList, "ghostsDQN" + nombre)
-    plotStats("Points", "Puntos comidos por episodio", iter, pointsList, "pointsDQN" + nombre)
-    plotStats("Big points", "Puntos grandes comidos por episodio", iter, bigPointsList, "bigPointsDQN" + nombre)
-    plotStats("Steps", "Pasos dados por episodio", iter, stepsList, "stepsDQN" + nombre)
-    plotBoxAndWhiskers(rewardsVector, "Reward", "rewardsDQN" + nombre, iter, "Boxplot de reward por episodio")
-    plotBoxAndWhiskers(ghostsList, "Ghosts", "ghostsDQN" + nombre, iter, "Boxplot de fantasmas comidos por episodio")
-    plotBoxAndWhiskers(pointsList, "Points", "pointsDQN" + nombre, iter, "Boxplot de puntos comidos por episodio")
-    plotBoxAndWhiskers(bigPointsList, "Big Points", "bigPointsDQN" + nombre, iter, "Boxplot de puntos grandes comidos por episodio")
-    plotBoxAndWhiskers(stepsList, "Steps", "stepsDQN" + nombre, iter, "Boxplot de pasos dados por episodio")
+    nombre = nombre[:-4]
+    plotStats("Métrica integradora", "Métrica integradora alcanzada por episodio en modo 5", iter, rewardsVector, "rewardsDQN" + nombre)
+    plotStats("Ghosts", "Fantasmas comidos por episodio en modo 5", iter, ghostsList, "ghostsDQN" + nombre)
+    plotStats("Points", "Puntos comidos por episodio en modo 5", iter, pointsList, "pointsDQN" + nombre)
+    plotStats("Big points", "Puntos grandes comidos por episodio en modo 5", iter, bigPointsList, "bigPointsDQN" + nombre)
+    plotStats("Steps", "Pasos dados por episodio en modo 5", iter, stepsList, "stepsDQN" + nombre)
+    plotBoxAndWhiskers(rewardsVector, "Reward", "rewardsDQN" + nombre, iter, "Boxplot de reward por episodio en modo 5")
+    plotBoxAndWhiskers(ghostsList, "Ghosts", "ghostsDQN" + nombre, iter, "Boxplot de fantasmas comidos por episodio en modo 5")
+    plotBoxAndWhiskers(pointsList, "Points", "pointsDQN" + nombre, iter, "Boxplot de puntos comidos por episodio en modo 5")
+    plotBoxAndWhiskers(bigPointsList, "Big Points", "bigPointsDQN" + nombre, iter, "Boxplot de puntos grandes comidos por episodio en modo 5")
+    plotBoxAndWhiskers(stepsList, "Steps", "stepsDQN" + nombre, iter, "Boxplot de pasos dados por episodio en modo 5")
 
     os.makedirs("graficos", exist_ok=True)
     with open("graficos/meansDQN" + nombre + ".csv", mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["Métrica", "Promedio"])
-        writer.writerow(["Reward", sum(rewardsVector) / len(rewardsVector)])
+        writer.writerow(["Métrica integradora", sum(rewardsVector) / len(rewardsVector)])
         writer.writerow(["Ghosts", sum(ghostsList) / len(ghostsList)])
         writer.writerow(["Points", sum(pointsList) / len(pointsList)])
         writer.writerow(["Big Points", sum(bigPointsList) / len(bigPointsList)])
         writer.writerow(["Steps", sum(stepsList) / len(stepsList)])
+        writer.writerow(["Victorias", winrate / len(stepsList)])
 
     with open("graficos/resultsDQN" + nombre + ".csv", mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(["Episodio", "Reward", "Ghosts", "Points", "Big Points", "Steps"])
+        writer.writerow(["Episodio", "Métrica integradora", "Ghosts", "Points", "Big Points", "Steps", "Ganó"])
         for i in range(len(rewardsVector)):
-            writer.writerow([i + 1, rewardsVector[i], ghostsList[i], pointsList[i], bigPointsList[i], stepsList[i]])
+            writer.writerow([i + 1, rewardsVector[i], ghostsList[i], pointsList[i], bigPointsList[i], stepsList[i], wins[i]])
     env.close()
 
 
