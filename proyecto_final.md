@@ -43,6 +43,7 @@
     - [Herramientas y entornos](#herramientas-y-entornos)
     - [Estrategia de entrenamiento](#estrategia-de-entrenamiento)
       - [Q-learning](#q-learning-1)
+      - [Discretización de estados](#discretización-de-estados)
       - [DQN](#dqn)
       - [PPO](#ppo)
     - [Descripción de los experimentos](#descripción-de-los-experimentos)
@@ -361,7 +362,7 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 
 ---
 #### DQN  
-**Tabla resumen de métricas obtenidas**
+**Tabla resumen de promedios de métricas obtenidas**
 
 | Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
 |-----------------------|-----------------|-------|--------|--------|---------|
@@ -369,6 +370,14 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 | Modo 2  | 143.92         | 118.17 | 2.81 | 1265.32 | 0.0 |
 | Modo 5   | 153.71            | 122.92  | 3.74 | 1302.16 | 0.02 |  
 
+
+**Tabla resumen de desviaciones estándar de métricas obtenidas**
+
+| Entorno               | DE de métrica integradora | DE de puntos chicos ingeridos | DE de fantasmas ingeridos | DE de pasos dados |
+|-----------------------|-----------------|-------|--------|--------|
+| Modo 0   | 23.66            | 17.24  | 1.24 | 178.89 |
+| Modo 2  | 9.95         | 5.64 | 1.38 | 424.24 |
+| Modo 5   | 25.21            | 18.45  | 1.75 | 328.35 |
 
 **Resultados de métrica integradora en 100 episodios**  
 
@@ -439,6 +448,13 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 | Modo 2  | 147.48         | 120.3 | 3.24 | 1400.26 | 0.01 |
 | Modo 5   | 149.41            | 120.88  | 3.33 | 1148.24 | 0.00 |  
 
+**Tabla resumen de desviaciones estándar de métricas obtenidas**
+
+| Entorno               | DE de métrica integradora | DE de puntos chicos ingeridos | DE de fantasmas ingeridos | DE de pasos dados |
+|-----------------------|-----------------|-------|--------|--------|
+| Modo 0   | 23.87            | 20.09  | 0.62 | 215.15 |
+| Modo 2  | 18.97         | 14.87 | 1.16 | 357.27 |
+| Modo 5   | 10.89            | 8.20  | 1.23 | 138.32 |
 
 **Resultados de métrica integradora en 100 episodios**  
 
