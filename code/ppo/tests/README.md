@@ -45,7 +45,8 @@ El resultado para esta configuración (promedio de la suma de rewards de 100 eje
 El resultado para esta configuración (promedio de la suma de rewards de 100 ejecuciones) es de 121.00 y la recompensa máxima fue de aproximadamente 125.00
 
 ## Caso 3.2
-Se utilizaron ligeras variaciones en las recompensas junto a los hiperparámetros del caso 3. Esto permitió aumentar ligeramente el resultado obtenido, siendo esta la mejor configuración hasta el momento.
+Se utilizaron ligeras variaciones en las recompensas junto a los hiperparámetros del caso 3. Esto permitió aumentar ligeramente el resultado obtenido, siendo esta la mejor configuración hasta el momento.  
+
     - Puntos: 0.35 puntos
     - Puntos grandes: 0.4 puntos
     - Muerte del primer fantasma: 1.1 punto

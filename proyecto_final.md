@@ -19,12 +19,38 @@
     - [Ambientes ALE y Gymnasium](#ambientes-ale-y-gymnasium)
   - [Diseño Experimental](#diseño-experimental)
     - [Métricas utilizadas](#métricas-utilizadas)
+      - [Métrica integradora (Fantasmas + Puntos grandes + Puntos chicos)](#métrica-integradora-fantasmas--puntos-grandes--puntos-chicos)
+        - [Descripción](#descripción)
+        - [Cálculo](#cálculo)
+        - [Interpretación](#interpretación)
+      - [Cantidad de puntos chicos ingeridos](#cantidad-de-puntos-chicos-ingeridos)
+        - [Descripción](#descripción-1)
+        - [Cálculo](#cálculo-1)
+        - [Interpretación](#interpretación-1)
+      - [Winrate](#winrate)
+        - [Descripción](#descripción-2)
+        - [Cálculo](#cálculo-2)
+        - [Interpretación](#interpretación-2)
+      - [Cantidad de fantasmas ingeridos](#cantidad-de-fantasmas-ingeridos)
+        - [Descripción](#descripción-3)
+        - [Cálculo](#cálculo-3)
+        - [Interpretación](#interpretación-3)
+      - [Cantidad de pasos dados](#cantidad-de-pasos-dados)
+        - [Descripción](#descripción-4)
+        - [Cálculo](#cálculo-4)
+        - [Interpretación](#interpretación-4)
+  - [](#)
     - [Herramientas y entornos](#herramientas-y-entornos)
+    - [Estrategia de entrenamiento](#estrategia-de-entrenamiento)
+      - [Q-learning](#q-learning-1)
+      - [DQN](#dqn)
+      - [PPO](#ppo)
     - [Descripción de los experimentos](#descripción-de-los-experimentos)
     - [Resultados](#resultados)
   - [Análisis y Discusión de Resultados](#análisis-y-discusión-de-resultados)
   - [Conclusiones Finales](#conclusiones-finales)
   - [Bibliografía](#bibliografía)
+  - [\[10\] Farama Foundation. (s.f.) *Ale documentation*. https://ale.farama.org/](#10-farama-foundation-sf-ale-documentation-httpsalefaramaorg)
 
 ---
 
@@ -62,7 +88,7 @@ En este enfoque, el agente sigue una política fija $\pi$ y su tarea es **evalua
 
 #### Active Reinforcement Learning
 
-Este otro enfoque implica que el agente **debe aprender qué hacer**, es decir, su política no está dada. Debe explorar el entorno para conocer sus consecuencias y balancear **exploración vs explotación**. [8]
+Este otro enfoque implica que el agente **debe aprender qué hacer**, es decir, su política no está dada. Debe explorar el entorno para conocer sus consecuencias y balancear **exploración vs explotación**. La primera consiste en explorar seleccionando diferentes acciones aleatoriamente, mientras que explotación se trata de elegir la mejor acción posible en cierto momento. Es importante equilibrar ambos, puesto que si explora mucho el agente puede nunca alcanzar un resultado óptimo y si siempre elige lo mejor (greedy), puede estancarse en un subóptimo, limitandose a "lo mejor conocido". [8]
 
 ---
 
@@ -92,13 +118,13 @@ La red se entrena minimizando la diferencia entre las predicciones y los valores
 
 #### Justificación de la elección
 
-DQN se eligió ya que resuelve la principal limitación de Q-learning, que es la imposibilidad de manejar espacios de estados grandes o continuos como los que presenta el entorno visual de Pac-Man, mediante el uso de redes convolucionales. 
+DQN se eligió ya que resuelve la principal limitación de Q-learning, que es la imposibilidad de manejar espacios de estados grandes o continuos como los que presenta el entorno visual de Pac-Man, mediante el uso de redes convolucionales. Además, Pacman devuelve imágenes como observaciones y DQN es especialmente efectivo para procesarlas, esto lo hace una elección particularmente buena.
 
 ---
 
 ### Proximal Policy Optimization (PPO)
 
-Proximal Policy Optimization (PPO) es un algoritmo de **policy-gradient** diseñado para entrenar agentes en entornos complejos y dinámicos. PPO mejora la estabilidad y eficiencia del aprendizaje sin requerir cálculos costosos. La idea principal es evitar que el agente cambie demasiado rápido su forma de actuar. Para eso, utiliza una estrategia especial que permite avanzar sin perder lo que ya se aprendió. A esto se le llama **optimización proximal**, ya que mantiene cada cambio “cerca” del anterior. [6] [7]
+Proximal Policy Optimization (PPO) es un algoritmo de **policy-gradient** diseñado para entrenar agentes en entornos complejos y dinámicos. PPO mejora la estabilidad y eficiencia del aprendizaje sin requerir cálculos costosos. La idea principal es evitar que el agente cambie demasiado rápido su forma de actuar (o su política). Para eso, utiliza una estrategia especial que permite avanzar sin perder lo que ya se aprendió. A esto se le llama **optimización proximal**, ya que mantiene cada cambio “cerca” del anterior y lo hace utilizando una **Clipped Surrogate Function** que está específicamente diseñada para mantener las actualizaciones pequeñas y estables [6] [7]
 
 En entornos visuales como Pac-Man, PPO (como también DQN) utiliza **redes neuronales convolucionales (CNN)** para procesar las imágenes del juego y extraer información relevante, como la posición de Pac-Man, los fantasmas y los puntos. Estas redes permiten interpretar píxeles como estados del entorno y tomar decisiones basadas en ellos, lo que hace que el agente pueda aprender directamente desde la imagen del juego, sin necesidad de reglas predefinidas. [9]
 
@@ -118,6 +144,8 @@ Para poder aplicar RL, es necesario utilizar wrappers personalizados, como:
 
 - Limitación del conjunto de acciones a solo las necesarias (LEFT, RIGHT, UP, DOWN).
 
+- Modificación de recompensas al ejecutar acciones.
+
 - Stack de frames para representar movimiento.
 
 ---
@@ -128,15 +156,132 @@ Para poder aplicar RL, es necesario utilizar wrappers personalizados, como:
 
 
 ### Métricas utilizadas
+Las métricas son importantes ya que permiten medir el desempeño de nuestras soluciones y posteriormente compararlas entre sí. Se tomaron en cuenta diferentes indicadores para tener en cuenta los diversos aspectos que presenta Pacman.
 
+#### Métrica integradora (Fantasmas + Puntos grandes + Puntos chicos)
+##### Descripción
+La métrica integra la cantidad de fantasmas comidos y la cantidad de puntos grandes y puntos chicos ingeridos, ponderando cada uno de estos según su importancia. Es importante ya que estos 3 factores son los que más aportan al objetivo del proyecto, que el agente sea capaz de ganar una partida de Pacman. Otros aspectos no fueron tenidos en cuenta ya que no son verdaderamente relevantes para medir esto, por ejemplo, las frutas.
+##### Cálculo
+Para calcularla se le dio más importancia a comer fantasmas junto a los puntos grandes y un poco menos a los puntos chicos. La fórmula utilizada fue:  
 
+$\text{Puntuación} = 5 \times (\text{fantasmas}) + 3 \times (\text{puntos grandes}) + 1 \times (\text{puntos chicos})$
 
+##### Interpretación
+Mientras mayor el resultado, mejor el desempeño en general del agente. Resultados muy bajos demuestran la baja ingestión de puntos y fantasmas, alejándolo del objetivo, ganar la partida.
+
+--- 
+
+#### Cantidad de puntos chicos ingeridos
+##### Descripción
+La métrica se trata de la cantidad de puntos chicos comidos por pacman. Es importante puesto que es la métrica más directa que brinda información acerca de cuán cerca estuvo el agente de ganar la partida, puesto que, el agente gana la partida cuando no queda ningún punto chico en el mapa.
+##### Cálculo
+Para calcularla se realiza la suma de todos los puntos recogidos por el agente.
+
+##### Interpretación
+Mientras mayor el resultado, más cerca de ganar la partida. Si el resultado supera los 126 puntos, significa que el agente ganó. Por otro lado, resultados muy bajos indican que el agente se encontraba lejos de completar exitosamente el nivel.
+
+--- 
+#### Winrate
+##### Descripción
+Se trata de la cantidad de veces que el agente ganó una partida sobre la cantidad de partidas que jugó.
+##### Cálculo
+Para calcularla se utiliza la siguiente fórmula:  
+$\text{Winrate} = \frac{\text{cantidad de victorias}}{\text{episodios ejecutados}}$
+
+##### Interpretación
+Resultados cercanos a 1 indican que se ganó la mayoría de las veces. Sin embargo, si el resultado se acerca a 0, la cantidad de victorias fueron muy pocas.
+
+--- 
+#### Cantidad de fantasmas ingeridos
+##### Descripción
+Se trata de la cantidad de veces que el agente comió un fantasma. Es una métrica importante puesto que nos muestra que tan agresivo es nuestro agente. Si bien no aporta información acerca de cuán cerca estuvo de ganar la partida, puesto que se puede ganar sin comer ningún fantasma, es relevante ya que comer fantasmas facilita alcanzar la victoria al minimizar la cantidad de enemigos durante un cierto tiempo.
+##### Cálculo
+Para calcularla se realiza la suma de la cantidad de fantasmas comidos por el agente.
+
+##### Interpretación
+Resultados muy grandes indican una agresividad elevada mientras que resultados más bajos indican un comportamiento más pasivo. Esta métrica no sirve para evaluar el acercamiento a la victoria.
+
+---
+#### Cantidad de pasos dados
+##### Descripción
+Se trata de la cantidad de pasos que dió el agente hasta perder todas las vidas. Es importante ya que nos indica el nivel de supervivencia del agente, nuevamente, sobrevivir no está ligado a ganar, sin embargo, es relevante ya que muestra que el agente tiene la capacidad de evadir la muerte efectivamente. 
+##### Cálculo
+Para calcularla se realiza la suma de los pasos dados por el agente desde el comienzo del episodio hasta que el agente pierde todas sus vidas.
+
+##### Interpretación
+Resultados elevados indican que el agente aprendió efectivamente a sobrevivir una gran cantidad de tiempo y a evadir a los fantasmas correctamente. Por otro lado, resultados menores denotan falta de capacidad para evadir enemigos.
+
+---
+##
 ### Herramientas y entornos
+Para el desarrollo del proyecto se utilizaron diversas herramientas con diferentes versiones. 
+Se utilizó el lenguaje de programación Python en su versión X.
 
+Con respecto al entorno, se utilizó ALE-py [10] versión X junto a Gymnasium en su versión X. Específicamente se hizo uso de "Pacman-v5". Se investigó acerca de "MsPacman-v5" pero se seleccionó el primero debido a su simplicidad visual y técnica, pues este tenía menos acciones posibles y las características visuales eran menos complejas. Para el entrenamiento se utilizó el modo 0 y para las pruebas se utilizaron los modos 0, 2 y 5. El modo 2 enlentece a los fantasmas mientras que el modo 5 los acelera.
 
+Se utilizaron las implementaciones de PPO y DQN de Stable-baselines3 en su versión X.
+
+Para el control de versiones y colaboración se utilizo Git y Github.
+
+Por último, para realizar los gráficos se utilizo Matplotlib.  
+
+---
+### Estrategia de entrenamiento
+Se realizaron los entrenamientos de los modelos de Q-learning, DQN, PPO. En los 3 casos se utilizaron diferentes configuraciones por lo que se presentarán en sus respectivas secciones. 
+
+#### Q-learning  
+
+#### DQN
+Se realizaron diferentes pruebas para determinar las recompensas y los hiperparámetros definitivos [Ver resultados de pruebas](code/dqn/tests/README.md). Estos fueron:  
+
+**Recompensas:**
+- Puntos: 0.3 punto
+- Puntos grandes: 0.4 puntos
+- Muerte de fantasma: 1 punto
+- Fruta: 0 puntos
+- Muerte: -1 puntos
+- Penalización por no obtener recompensa en 5 pasos: -0.05 puntos  
+
+**Hiperparámetros:**
+- learning_rate=5e-5 
+- exploration_fraction=0.15
+- exploration_final_eps=0.05,
+- buffer_size= 200000
+- batch_size = 32  
+
+Para entrenar el modelo se utilizaron 12.000.000 de timesteps.
+
+#### PPO
+Se realizaron diferentes pruebas para determinar las recompensas y los hiperparámetros definitivos [Ver resultados de pruebas](code/ppo/tests/README.md).  Estos fueron:  
+
+**Recompensas:**
+- Puntos: 0.35 punto
+- Puntos grandes: 0.4 puntos
+- Muerte de fantasma: 1.1 punto
+- Fruta: 0 puntos
+- Muerte: -1 puntos
+- Penalización por no obtener recompensa en 5 pasos: -0.05 puntos  
+
+**Hiperparámetros:**
+- n_steps=1536,
+- batch_size=384,
+- n_epochs=8,
+- gamma=0.99,
+- gae_lambda=0.9,
+- clip_range=0.04,
+- ent_coef=0.003,
+- vf_coef=0.5,
+- learning_rate=2.5e-4,
+- max_grad_norm=0.5,
+
+Para entrenar el modelo se utilizaron 12.000.000 de timesteps.  
 
 ### Descripción de los experimentos
+Se realizaron 3 tipos de experimentos. Los mismos consistieron en la ejecución de los modelos en 3 variaciones del entorno. Esto se realizó de esta manera ya que de esta forma no solo se probaría en exactamente el mismo entorno que se usó para entrenar y los agentes verían características no vistas durante el entrenamiento. Gracias a esto, podemos analizar la capacidad de los mismos para generalizar y no limitamos el análisis al entorno que ya conocen.  
 
+Para los experimentos se realizaron 100 ejecuciones por cada algoritmo (Random, Q-Learning, DQN, PPO) y por cada modo del entorno (0, 2 y 5) con la semilla "2025". El modo 0 del entorno consiste en mantener las velocidades de los fantasmas en los valores por defecto. Por otro lado, el modo 2 sería un "modo fácil", ya que los fantasmas se mueven más lentamente. Por último, el modo 5 sería el "modo difícil" debido a que los fantasmas son mas veloces. 
+
+Con estas 100 ejecuciones de cada caso se obtuvieron las métricas mencionadas anteriormente y se analizarán en la siguiente sección. Particularmente, con estos indicadores se buscó evaluar que tan buenos fueron los modelos. Para ello, se tomó en cuenta el objetivo del proyecto, es decir, cuán cerca estuvieron de ganar. Sin embargo, también se midieron otros aspectos, por ejemplo, su capacidad de supervivencia, la cantidad de veces que se ganó o el nivel de agresividad mediante la ingestión de fantasmas.
 
 
 ### Resultados
@@ -171,4 +316,5 @@ Para poder aplicar RL, es necesario utilizar wrappers personalizados, como:
 
 \[9] OpenAI. (s.f.). *Proximal Policy Optimization — Spinning Up*. [https://spinningup.openai.com/en/latest/algorithms/ppo.html](https://spinningup.openai.com/en/latest/algorithms/ppo.html)
 
+\[10] Farama Foundation. (s.f.) *Ale documentation*. [https://ale.farama.org/](https://ale.farama.org/)
 ---
