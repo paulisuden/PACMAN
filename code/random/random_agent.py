@@ -8,7 +8,7 @@ import csv
 
 
 def plotStats(ylabel, title, iter, vector, filename):
-    x = list(range(1, iter+1))
+    x = list(range(1, iter + 1))
     plot.bar(x, vector)
     plot.xlabel("Episodio")
     plot.ylabel(ylabel)
@@ -38,7 +38,8 @@ ghosts_list = []
 steps_list = []
 reward_list = []
 
-env = gym.make("ALE/Pacman-v5", mode=2)
+np.random.seed(2025)
+env = gym.make("ALE/Pacman-v5", mode=2, render_mode=None)
 obs, _ = env.reset(seed=SEED)
 for episode in range(episodes):
     obs, info = env.reset()
@@ -54,7 +55,7 @@ for episode in range(episodes):
     while not done:
         action = np.random.choice(ACTIONS)
         obs, reward, done, truncated, info = env.step(action)
-        total_reward += reward
+        #total_reward += reward
         steps += 1
 
         if reward > 0:
@@ -148,28 +149,28 @@ for episode in range(episodes):
     while not done:
         action = np.random.choice(ACTIONS)
         obs, reward, done, truncated, info = env.step(action)
-        total_reward += reward
+        #total_reward += reward
         steps += 1
 
-    if reward > 0:
-        if any(x <= reward <= x+5 for x in [20, 40, 80, 160]):
-            ghosts += 1
-            if reward in [20, 40, 80, 160]:
-                pass
-            elif reward in [25, 45, 85, 165]:
+        if reward > 0:
+            if any(x <= reward <= x+5 for x in [20, 40, 80, 160]):
+                ghosts += 1
+                if reward in [20, 40, 80, 160]:
+                    pass
+                elif reward in [25, 45, 85, 165]:
+                    big_point += 1
+                else:
+                    small_point += 1
+            elif reward < 5:
+                small_point += reward
+            elif reward == 5:
                 big_point += 1
-            else:
+            elif reward == 100:
+                pass
+            elif reward == 101:
                 small_point += 1
-        elif reward < 5:
-            small_point += reward
-        elif reward == 5:
-            big_point += 1
-        elif reward == 100:
-            pass
-        elif reward == 101:
-            small_point += 1
-        elif reward == 102:
-            small_point += 2 
+            elif reward == 102:
+                small_point += 2 
 
     total_reward += ghosts * 5 + small_point + big_point * 3
     small_point_list.append(small_point)
@@ -240,7 +241,7 @@ for episode in range(episodes):
     while not done:
         action = np.random.choice(ACTIONS)
         obs, reward, done, truncated, info = env.step(action)
-        total_reward += reward
+        #total_reward += reward
         steps += 1
 
         if reward > 0:
