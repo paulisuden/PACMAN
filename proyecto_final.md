@@ -410,20 +410,20 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 #### Random
 **Tabla resumen de promedios de métricas obtenidas**
 
-| Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
-|-----------------------|-----------------|-------|--------|--------|---------|
-| Modo 0   | 24.1             | 24.1   | 0.0 | 517.34 | 0.0 |
-| Modo 2  |         |  |  |  | 0.0 |
-| Modo 5   | 26.17            | 26.01  | 0.02 | 497.2 | 0.0 |  
-
+| Entorno | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate |
+|---------|-------------------------------|-------------------------------------|----------------------------------|--------------------------|---------|
+| modo 0  | 13.28                         | 13.28                               | 0.00                             | 430.58                   | 0       |
+| modo 2  | 38.49                         | 37.13                               | 0.05                             | 900.39                   | 0       |
+| modo 5  | 14.60                         | 14.60                               | 0.00                             | 403.58                   | 0       |
 
 **Tabla resumen de desviaciones estándar de métricas obtenidas**
 
-| Entorno               | DE de métrica integradora | DE de puntos chicos ingeridos | DE de fantasmas ingeridos | DE de pasos dados |
-|-----------------------|-----------------|-------|--------|--------|
-| Modo 0   |             | - | - | - |
-| Modo 2  |          | - | - | - |
-| Modo 5   |             | - | - | - |
+| Entorno | DE de métrica integradora | DE de puntos chicos ingeridos | DE de fantasmas ingeridos | DE de pasos dados |
+|---------|----------------------------|-------------------------------|----------------------------|-------------------|
+| Modo 0  | 12.95                      | 0.14                          | 0.0                        | 145.55            |
+| Modo 2  | 25.30                      | 0.17                          | 0.0                        | 290.42            |
+| Modo 5  | 5.26                       | 0.14                          | 0.0                        | 82.11             |
+
 
 **Resultados de métrica integradora en 100 episodios en modo 0, 2 y 5**  
 
@@ -490,17 +490,17 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 | Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
 |-----------------------|-----------------|-------|--------|--------|---------|
 | Modo 0   | 24.1             | 24.1   | 0.0 | 517.34 | 0.0 |
-| Modo 2  |         |  |  |  | 0.0 |
+| Modo 2  |   42.49      | 42.03 | 0.02 | 1864.57 | 0.0 |
 | Modo 5   | 26.17            | 26.01  | 0.02 | 497.2 | 0.0 |  
 
 
 **Tabla resumen de desviaciones estándar de métricas obtenidas**
 
-| Entorno               | DE de métrica integradora | DE de puntos chicos ingeridos | DE de fantasmas ingeridos | DE de pasos dados |
-|-----------------------|-----------------|-------|--------|--------|
-| Modo 0   |             | - | - | - |
-| Modo 2  |          | - | - | - |
-| Modo 5   |             | - | - | - |
+| Entorno | DE de métrica integradora | DE de puntos chicos ingeridos | DE de fantasmas ingeridos | DE de pasos dados |
+|---------|----------------------------|-------------------------------|----------------------------|-------------------|
+| modo 0  | 9.82                       | 9.82                          | 0.00                       | 165.44            |
+| modo 2  | 12.14                      | 11.81                         | 0.14                       | 1571.79           |
+| modo 5  | 11.23                      | 10.83                         | 0.14                       | 196.19            |
 
 **Resultados de métrica integradora en 100 episodios en modo 0, 2 y 5**  
 <p align="center">
@@ -717,8 +717,40 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 ## Análisis y Discusión de Resultados
 
 ### Random
+**Métrica integradora**
+Podemos ver que tanto en el modo 0 como en el modo 5, el promedio es bastante parecido, aunque en el modo 5 hubo un episodio que llegó a los 40 puntos, mientras que en el modo 0 el mayor puntaje está entre los 20 y 25 puntos. Ahora bien, en el modo 2 hay una diferencia notable en esta métrica, ya que el promedio sube a 38.49 y, el mayor valor supera los 80 puntos, por lo que podemos pensar que, como los fantasmas tienen una velocidad mucho menor en este modo, favorece al agente random a comer más puntos ya que los fantasmas ce acercarán a él más lentamente.
+
+**Cantidad de puntos chicos ingeridos**
+
+
+**Cantidad de fantasmas ingeridos**
+
+
+**Promedio de pasos dados**
+
+
+**Winrate**
+
+
+**Conclusión**
 
 ### Q-Learning
+**Métrica integradora**
+
+
+**Cantidad de puntos chicos ingeridos**
+
+
+**Cantidad de fantasmas ingeridos**
+
+
+**Promedio de pasos dados**
+
+
+**Winrate**
+
+
+**Conclusión**
 
 ### DQN  
 **Métrica integradora**  
