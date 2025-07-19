@@ -8,7 +8,7 @@ import csv
 
 
 def plotStats(ylabel, title, iter, vector, filename):
-    x = list(range(1, iter+1))
+    x = list(range(1, iter + 1))
     plot.bar(x, vector)
     plot.xlabel("Episodio")
     plot.ylabel(ylabel)
@@ -57,29 +57,29 @@ for episode in range(episodes):
         total_reward += reward
         steps += 1
 
-    if reward > 0:
-            #aumento recompensa por fantasmas
-            if any(x <= reward <= x+5 for x in [20, 40, 80, 160]):
-                ghosts += 1
-                if reward in [20, 40, 80, 160]:
-                    pass
-                elif reward in [25, 45, 85, 165]:
+        if reward > 0:
+                #aumento recompensa por fantasmas
+                if any(x <= reward <= x+5 for x in [20, 40, 80, 160]):
+                    ghosts += 1
+                    if reward in [20, 40, 80, 160]:
+                        pass
+                    elif reward in [25, 45, 85, 165]:
+                        big_point += 1
+                    else:
+                        small_point += 1
+                #aumento recompensa por puntos chicos
+                elif reward < 5:
+                    small_point += reward
+                #aumento recompensa por puntos grandes
+                elif reward == 5:
                     big_point += 1
-                else:
+                #aumento recompensa por fruta
+                elif reward == 100:
+                    pass
+                elif reward == 101:
                     small_point += 1
-            #aumento recompensa por puntos chicos
-            elif reward < 5:
-                small_point += reward
-            #aumento recompensa por puntos grandes
-            elif reward == 5:
-                big_point += 1
-            #aumento recompensa por fruta
-            elif reward == 100:
-                pass
-            elif reward == 101:
-                small_point += 1
-            elif reward == 102:
-                small_point += 2 
+                elif reward == 102:
+                    small_point += 2 
 
     total_reward += ghosts * 5 + small_point + big_point * 3
     small_point_list.append(small_point)
@@ -151,25 +151,25 @@ for episode in range(episodes):
         total_reward += reward
         steps += 1
 
-    if reward > 0:
-        if any(x <= reward <= x+5 for x in [20, 40, 80, 160]):
-            ghosts += 1
-            if reward in [20, 40, 80, 160]:
-                pass
-            elif reward in [25, 45, 85, 165]:
+        if reward > 0:
+            if any(x <= reward <= x+5 for x in [20, 40, 80, 160]):
+                ghosts += 1
+                if reward in [20, 40, 80, 160]:
+                    pass
+                elif reward in [25, 45, 85, 165]:
+                    big_point += 1
+                else:
+                    small_point += 1
+            elif reward < 5:
+                small_point += reward
+            elif reward == 5:
                 big_point += 1
-            else:
+            elif reward == 100:
+                pass
+            elif reward == 101:
                 small_point += 1
-        elif reward < 5:
-            small_point += reward
-        elif reward == 5:
-            big_point += 1
-        elif reward == 100:
-            pass
-        elif reward == 101:
-            small_point += 1
-        elif reward == 102:
-            small_point += 2 
+            elif reward == 102:
+                small_point += 2 
 
     total_reward += ghosts * 5 + small_point + big_point * 3
     small_point_list.append(small_point)
@@ -243,25 +243,25 @@ for episode in range(episodes):
         total_reward += reward
         steps += 1
 
-    if reward > 0:
-        if any(x <= reward <= x+5 for x in [20, 40, 80, 160]):
-            ghosts += 1
-            if reward in [20, 40, 80, 160]:
-                pass
-            elif reward in [25, 45, 85, 165]:
+        if reward > 0:
+            if any(x <= reward <= x+5 for x in [20, 40, 80, 160]):
+                ghosts += 1
+                if reward in [20, 40, 80, 160]:
+                    pass
+                elif reward in [25, 45, 85, 165]:
+                    big_point += 1
+                else:
+                    small_point += 1
+            elif reward < 5:
+                small_point += reward
+            elif reward == 5:
                 big_point += 1
-            else:
+            elif reward == 100:
+                pass
+            elif reward == 101:
                 small_point += 1
-        elif reward < 5:
-            small_point += reward
-        elif reward == 5:
-            big_point += 1
-        elif reward == 100:
-            pass
-        elif reward == 101:
-            small_point += 1
-        elif reward == 102:
-            small_point += 2 
+            elif reward == 102:
+                small_point += 2 
 
     total_reward += ghosts * 5 + small_point + big_point * 3
     small_point_list.append(small_point)
