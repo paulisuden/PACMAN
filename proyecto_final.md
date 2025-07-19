@@ -142,22 +142,6 @@ PPO se eligió ya que a diferencia de los dos algoritmos anteriores, este repres
 
 ---
 
-### Ambientes ALE y Gymnasium
-
-El entorno utilizado para entrenar al agente es el de Pacman-v5 de la librería Gymnasium, que utiliza ALE (Arcade Learning Environment) como backend. Este entorno representa el juego original de Atari y proporciona imágenes RGB como observación (resolución de 210x160 píxeles) y un espacio de acciones discretas. [1]
-
-Para poder aplicar RL, es necesario utilizar wrappers personalizados, como:
-
-- Reducción de dimensiones y colores.
-
-- Limitación del conjunto de acciones a solo las necesarias (LEFT, RIGHT, UP, DOWN).
-
-- Modificación de recompensas al ejecutar acciones.
-
-- Stack de frames para representar movimiento.
-
----
-
 
 ## Diseño Experimental
 
