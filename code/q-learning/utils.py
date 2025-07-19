@@ -62,12 +62,13 @@ class CropObservation(ObservationWrapper):
 
 def make_env(render):
     if render:
-        env = gym.make("ALE/Pacman-v5", render_mode="human")
+        env = gym.make("ALE/Pacman-v5", mode=2, render_mode="human")
     else:
-        env = gym.make("ALE/Pacman-v5")
+        env = gym.make("ALE/Pacman-v5", mode=2)
     env = CropObservation(env, bottom=38)           # crop 
     env = ResizeObservation(env, shape=(84,84))     # resize 
     return env
+
 
 ######################################################## EXTRACT FEATURES ########################################################
 

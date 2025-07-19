@@ -10,6 +10,10 @@ def epsilon_greedy(state):
         return random.choice(actions)
     else:
         return actions[np.argmax(q_table[state])]
+    
+"""SEED = 2025
+random.seed(SEED)
+np.random.seed(SEED)"""
 
 start = time.time()
 learning_rate = 0.1
@@ -36,6 +40,7 @@ for episode in range(episodes):
 
     env = make_env(render)
     obs, _ = env.reset()
+    #obs, _ = env.reset(seed=SEED)
     state = extract_features(obs)
     done = False
 
