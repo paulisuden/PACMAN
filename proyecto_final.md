@@ -581,22 +581,39 @@ Por otro lado, al observar los diagramas de cajas podemos ver datos atípicos co
 Solo observando esta métrica, se puede elaborar una conclusión tentativa de que PPO ofrece unos excelentes resultados a la hora de jugar Pac-Man. Es mucho mejor que la solución aleatoria y Q-learning, pero se queda ligeramente atrás con respecto a DQN.  
 
 ---
-**Cantidad de puntos chicos ingeridos**   
+**Cantidad de puntos chicos ingeridos**  
+Con esta métrica se repite la misma situación que en el caso de DQN, es decir, el entorno con el modo 0 tenía muy buenos resultados, le seguía el del modo 5 y finalmente el del modo 2. Sin embargo, se observa que en este caso, la diferencia entre los resultados de los agentes en los entornos con los modos 2 y 5 es prácticamente nula, por lo que ambos obtuvieron aproximadamente la misma cantidad de puntos, con una ligera ventaja por parte del entorno con el modo 5, puesto que la desviación estándar es muy baja, lo que indica que en la mayoría de las ejecuciones se obtuvieron cantidades de puntos similares. 
 
+Por otro lado, en los entornos con los modos 5 y 0 los resultados de los agentes fueron mejores que en DQN, lo que indicaría que el modelo entrenado con PPO aprendió dando más prioridad a comer los puntos chicos. Esto es una ventaja puesto que la ingestión de estos puntos acerca el agente hacia la victoria de la partida, por ello, el resultado obtenido fue satisfactorio.  
+
+Adicionalmente, si se tiene en cuenta el diagrama de caja, se puede observar, nuevamente, la existencia de datos atípicos mayores a 220 en las ejecuciones del agente en los entornos con modo 0 y 2. Esto estaría indicando la victoria del agente en dichas ejecuciones. 
+
+Teniendo en cuenta esta métrica, por el contrario que en el caso anterior, se observa una ligera ventaja por parte del PPO frente al DQN. Sin embargo, sigue predominando frente a la solución aleatoria y a la solución Q-learning.
 
 ---
-**Cantidad de fantasmas ingeridos**  
+**Cantidad de fantasmas ingeridos**   
+En este caso, se observa que el agente comió aproximadamente la misma cantidad de fantasmas en promedio en los 3 entornos. Sin embargo, hay una mayor variación en los entornos con modos 2 y 5, esto es posible verlo mediante el coeficiente de variación, el cual es 35% y 37% respectivamente. A pesar de esto, es posible notar que la agresividad del agente no es tanta, incluso pudiendo considerarlo como un comportamiento pasivo, ya que en promedio no alcanzó a comer por lo menos 1 vez a cada uno.   
+
+Al compararlo con el DQN, se puede observar que este es más agresivo en los entornos con modo 0 y 5. Esto se puede explicar, nuevamente, debido a la diferencia en las recompensas del entorno. PPO fue entrenado con un ligero aumento en las recompensas de los puntos chicos, por lo que puede estar priorizando comerlos frente a eliminar enemigos. Esto no es malo, ya que al fin y al cabo lo que verdaderamente cuenta a la hora de ganar la partida es comer todos los puntos chicos, pero eliminar enemigos brinda una gran ventaja para llevar esto a cabo. 
 
 ---
 **Promedio de pasos dados**  
-
+Al observar esta métrica se evidencia una diferencia notable respecto al comportamiento del agente bajo DQN, en este caso, en los entornos con modo 0 y 2 el agente sobrevive, en promedio, más pasos que en el anterior. Sin embargo, en el caso del entorno con modo 5, el agente sobrevive bastante menos. Esto podría estar relacionado a la cantidad de puntos que consigue en estos entornos, puesto que en los dos primeros el agente puede estar ganando más puntos debido a que está sobreviviendo más tiempo, mientras que en el tercero gana menos puntos debido a que muere más rápido. Con respecto a la variación, esta se mantiene aproximadamente igual en los primeros dos entornos, mientras que para el entorno con modo 5, la variación disminuye bastante con respecto al DQN, esto es posible verlo a través del coeficiente de variación, que es de apenas un 12%.
 
 ---
 **Winrate**  
+Se puede observar gracias a esta métrica que se alcanzó la meta del proyecto, ganar la partida, en dos de los entornos probados. En el entorno con modo 0 ganó 3 de los 100 episodios y en el modo 2 ganó 1 de los 100 episodios. Por otro lado, en el entorno con el modo 5 no ganó ninguna vez. Esto era esperable, ya que el entorno con el modo 0 fue el utilizado para entrenar el modelo, por lo que se esperaba que el agente tuviera un mejor desempeño en él. Además, si comparamos con DQN, PPO gana 1 vez más en dicho ambiente.  
+
+Con respecto al entorno que utiliza el modo 2, el agente presenta una ligera mejoría con respecto a DQN, ya que en PPO gana en 1 episodio, mientras que en DQN no gana en ninguno. Sin embargo, si se considera el entorno con el modo 5, DQN es la mejor opción, puesto que PPO no gana en ninguna ocasión, mientras que el primero gana 2 veces.  
+
+Si tomamos en cuenta esta métrica, PPO es el claro vencedor para el entorno con el cual se entrenaron los modelos, sin embargo, no por demasiada diferencia frente a DQN. Por otro lado, la diferencia frente a los otros dos es bastante grande, puesto que estos no solo no ganan ninguna vez, si no que ni se acercan a la victoria. 
+
 
 ---
 
 **Conclusión**  
+
+En conclusión, PPO es un algoritmo muy robusto y adecuado para resolver el problema presentado. Presenta un gran desempeño en todas las métricas y está a la par de DQN, manteniendo su superioridad frente a la solución aleatoria y a Q-learning. En algunas métricas como puntos chicos obtenidos o winrate, el PPO es el claro ganador, mientras que en la métrica integradora, que da una visión del desempeño general, DQN sale ganador. Además, fue posible utilizarlo para completar el objetivo del proyecto, ganar la partida. Si bien el agente logró la victoria en relativamente pocos episodios, fue posible alcanzar el éxito mediante el entrenamiento con PPO.
 
 ## Conclusiones Finales
 
