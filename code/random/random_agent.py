@@ -38,7 +38,8 @@ ghosts_list = []
 steps_list = []
 reward_list = []
 
-env = gym.make("ALE/Pacman-v5", mode=2)
+np.random.seed(2025)
+env = gym.make("ALE/Pacman-v5", mode=2, render_mode=None)
 obs, _ = env.reset(seed=SEED)
 for episode in range(episodes):
     obs, info = env.reset()
@@ -54,7 +55,7 @@ for episode in range(episodes):
     while not done:
         action = np.random.choice(ACTIONS)
         obs, reward, done, truncated, info = env.step(action)
-        total_reward += reward
+        #total_reward += reward
         steps += 1
 
         if reward > 0:
@@ -148,7 +149,7 @@ for episode in range(episodes):
     while not done:
         action = np.random.choice(ACTIONS)
         obs, reward, done, truncated, info = env.step(action)
-        total_reward += reward
+        #total_reward += reward
         steps += 1
 
         if reward > 0:
@@ -240,7 +241,7 @@ for episode in range(episodes):
     while not done:
         action = np.random.choice(ACTIONS)
         obs, reward, done, truncated, info = env.step(action)
-        total_reward += reward
+        #total_reward += reward
         steps += 1
 
         if reward > 0:
