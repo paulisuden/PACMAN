@@ -408,9 +408,156 @@ Por otro lado, las métricas nos permitieron comparar entre los distintos algori
 Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.  
 
 #### Random
+**Tabla resumen de promedios de métricas obtenidas**
+
+| Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
+|-----------------------|-----------------|-------|--------|--------|---------|
+| Modo 0   | 24.1             | 24.1   | 0.0 | 517.34 | 0.0 |
+| Modo 2  |         |  |  |  | 0.0 |
+| Modo 5   | 26.17            | 26.01  | 0.02 | 497.2 | 0.0 |  
+
+
+**Tabla resumen de desviaciones estándar de métricas obtenidas**
+
+| Entorno               | DE de métrica integradora | DE de puntos chicos ingeridos | DE de fantasmas ingeridos | DE de pasos dados |
+|-----------------------|-----------------|-------|--------|--------|
+| Modo 0   |             | - | - | - |
+| Modo 2  |          | - | - | - |
+| Modo 5   |             | - | - | - |
+
+**Resultados de métrica integradora en 100 episodios en modo 0, 2 y 5**  
+
+<p align="center">
+  <img src="code/random/graphics/rewards-random-mode-0.png" width="30%" />
+  <img src="code/random/graphics/rewards-random-mode-2.png" width="30%" />
+  <img src="code/random/graphics/rewards-random-mode-5.png" width="30%" />
+</p>
+
+**Cantidad de puntos chicos ingeridos en 100 episodios en modo 0, 2 y 5**  
+<p align="center">
+  <img src="code/random/graphics/points-random-mode-0.png" width="30%" />
+  <img src="code/random/graphics/points-random-mode-2.png" width="30%" />
+  <img src="code/random/graphics/points-random-mode-5.png" width="30%" />
+</p>
+
+**Cantidad de pasos dados en 100 episodios en modo 0, 2 y 5**  
+<p align="center">
+  <img src="code/random/graphics/steps-random-mode-0.png" width="30%" />
+  <img src="code/random/graphics/steps-random-mode-2.png" width="30%" />
+  <img src="code/random/graphics/steps-random-mode-5.png" width="30%" />
+</p>
+
+**Cantidad de fantasmas ingeridos en 100 episodios en modo 0, 2 y 5**  
+<p align="center">
+  <img src="code/random/graphics/ghosts-random-mode-0.png" width="30%" />
+  <img src="code/random/graphics/ghosts-random-mode-2.png" width="30%" />
+  <img src="code/random/graphics/ghosts-random-mode-5.png" width="30%" />
+</p>
+
+**Boxplots de métricas integradoras en 100 episodios en modo 0, 2 y 5**  
+<p align="center">
+  <img src="code/random/graphics/boxplot_rewards-random-mode-0.png" width="30%" />
+  <img src="code/random/graphics/boxplot_rewards-random-mode-2.png" width="30%" />
+  <img src="code/random/graphics/boxplot_rewards-random-mode-5.png" width="30%" />
+</p>
+
+**Boxplots de puntos chicos ingeridos en 100 episodios en modo 0, 2 y 5**  
+<p align="center">
+  <img src="code/random/graphics/boxplot_points-random-mode-0.png" width="30%" />
+  <img src="code/random/graphics/boxplot_points-random-mode-2.png" width="30%" />
+  <img src="code/random/graphics/boxplot_points-random-mode-5.png" width="30%" />
+</p>
+
+**Boxplots de pasos dados en 100 episodios en modo 0, 2 y 5**  
+<p align="center">
+  <img src="code/random/graphics/boxplot_steps-random-mode-0.png" width="30%" />
+  <img src="code/random/graphics/boxplot_steps-random-mode-2.png" width="30%" />
+  <img src="code/random/graphics/boxplot_steps-random-mode-5.png" width="30%" />
+</p>
+
+**Boxplots de fantasmas ingeridos en 100 episodios en modo 0, 2 y 5**  
+<p align="center">
+  <img src="code/random/graphics/boxplot_ghosts-random-mode-0.png" width="30%" />
+  <img src="code/random/graphics/boxplot_ghosts-random-mode-2.png" width="30%" />
+  <img src="code/random/graphics/boxplot_ghosts-random-mode-5.png" width="30%" />
+</p>  
 
 ---
 #### Q-learning
+
+**Tabla resumen de promedios de métricas obtenidas**
+
+| Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
+|-----------------------|-----------------|-------|--------|--------|---------|
+| Modo 0   | 24.1             | 24.1   | 0.0 | 517.34 | 0.0 |
+| Modo 2  |         |  |  |  | 0.0 |
+| Modo 5   | 26.17            | 26.01  | 0.02 | 497.2 | 0.0 |  
+
+
+**Tabla resumen de desviaciones estándar de métricas obtenidas**
+
+| Entorno               | DE de métrica integradora | DE de puntos chicos ingeridos | DE de fantasmas ingeridos | DE de pasos dados |
+|-----------------------|-----------------|-------|--------|--------|
+| Modo 0   |             | - | - | - |
+| Modo 2  |          | - | - | - |
+| Modo 5   |             | - | - | - |
+
+**Resultados de métrica integradora en 100 episodios en modo 0, 2 y 5**  
+<p align="center">
+  <img src="code/q-learning/graphics/rewards-Q-learning.png" width="30%" />
+  <img src="code/q-learning/graphics/rewards-Q-learning-mode-2.png" width="30%" />
+  <img src="code/q-learning/graphics/rewards-Q-learning-mode-5.png" width="30%" />
+</p>
+
+**Cantidad de puntos chicos ingeridos en 100 episodios en modo 0, 2 y 5**  
+<p align="center">
+  <img src="code/q-learning/graphics/points-Q-learning.png" width="30%" />
+  <img src="code/q-learning/graphics/points-Q-learning-mode-2.png" width="30%" />
+  <img src="code/q-learning/graphics/points-Q-learning-mode-5.png" width="30%" />
+</p>
+
+**Cantidad de pasos dados en 100 episodios**  
+<p align="center">
+  <img src="code/q-learning/graphics/steps-Q-learning.png" width="30%" />
+  <img src="code/q-learning/graphics/steps-Q-learning-mode-2.png" width="30%" />
+  <img src="code/q-learning/graphics/steps-Q-learning-mode-5.png" width="30%" />
+</p>
+
+**Cantidad de fantasmas ingeridos en 100 episodios**  
+<p align="center">
+  <img src="code/q-learning/graphics/ghosts-Q-learning.png" width="30%" />
+  <img src="code/q-learning/graphics/ghosts-Q-learning-mode-2.png" width="30%" />
+  <img src="code/q-learning/graphics/ghosts-Q-learning-mode-5.png" width="30%" />
+</p>
+
+**Boxplots de métricas integradoras en 100 episodios**  
+<p align="center">
+  <img src="code/q-learning/graphics/boxplot_rewards-Q-learning.png" width="30%" />
+  <img src="code/q-learning/graphics/boxplot_rewards-Q-learning-mode-2.png" width="30%" />
+  <img src="code/q-learning/graphics/boxplot_rewards-Q-learning-mode-5.png" width="30%" />
+</p>
+
+**Boxplots de puntos chicos ingeridos en 100 episodios**  
+<p align="center">
+  <img src="code/q-learning/graphics/boxplot_points-Q-learning.png" width="30%" />
+  <img src="code/q-learning/graphics/boxplot_points-Q-learning-mode-2.png" width="30%" />
+  <img src="code/q-learning/graphics/boxplot_points-Q-learning-mode-5.png" width="30%" />
+</p>
+
+**Boxplots de pasos dados en 100 episodios**  
+<p align="center">
+  <img src="code/q-learning/graphics/boxplot_steps-Q-learning.png" width="30%" />
+  <img src="code/q-learning/graphics/boxplot_steps-Q-learning-mode-2.png" width="30%" />
+  <img src="code/q-learning/graphics/boxplot_steps-Q-learning-mode-5.png" width="30%" />
+</p>
+
+**Boxplots de fantasmas ingeridos en 100 episodios**  
+<p align="center">
+  <img src="code/q-learning/graphics/boxplot_ghosts-Q-learning.png" width="30%" />
+  <img src="code/q-learning/graphics/boxplot_ghosts-Q-learning-mode-2.png" width="30%" />
+  <img src="code/q-learning/graphics/boxplot_ghosts-Q-learning-mode-5.png" width="30%" />
+</p>  
+
 
 ---
 #### DQN  
