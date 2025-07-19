@@ -240,6 +240,9 @@ Se realizaron los entrenamientos de los modelos de Q-learning, DQN, PPO. En los 
 ---
 
 #### Q-learning  
+
+---
+
 #### Discretización de estados
 Para discretizar los estados y poder aplicar Q-learning a Pac-Man, básicamente tomamos como estado una tupla en donde cada posición representa la posible acción a tomar (arriba, derecha, izquierda, abajo). Y el valor en cada posición de la tupla viene dado por el análisis de una imagen recortada que representa la situación actual del pacman:
 
@@ -295,6 +298,49 @@ Para ello, se definen las posibles formas que un pellet puede adoptar en la imag
 En caso de que no haya pellets, se verifica si en dirección a esa zona hay pared, como sería el caso de las figuras 2 y 5. En esta parte básicamente se toman todos los posibles colores de pared con su respectiva tolerancia, y en caso de encontrar píxeles que correspondan, se confirma esto.
 
 En caso de que ninguna opción sea válida, se considera que esa zona está libre de fantasmas, paredes y pellets. Y así cada observación se analiza y se logran discretizar todos los estados.
+
+---
+
+#### Recompensas e hiperparámetros
+
+Se experimentó con múltiples configuraciones de recompensas e hiperparámetros. En la mayoría de los casos, los valores aprendidos en la Q-table resultaron coherentes: las acciones con mayor valor estaban asociadas a posiciones donde la tupla del estado representaba una mejor situación (por ejemplo, evitar fantasmas o moverse hacia pellets).
+
+El principal desafío del algoritmo no fue el aprendizaje en sí, sino lograr una discretización adecuada del espacio de estados. Esta debía describir correctamente el contexto del entorno (por ejemplo, la presencia de enemigos o comida en distintas direcciones), pero al mismo tiempo debía ser lo suficientemente general como para aplicar lo aprendido a situaciones similares ubicadas en distintas zonas del mapa.
+
+En la versión final, las recompensas fueron definidas de la siguiente manera:
+
+1. **-10 puntos** si el agente se dirigía hacia una dirección donde había un fantasma (valor 0 en la tupla del estado).
+2. **-0.5 puntos** si la acción tomada lo dirigía hacia una pared (valor 1). Aunque no es deseable, es menos perjudicial que avanzar hacia un fantasma.
+3. **+3 puntos** si se movía hacia una celda libre (valor 2), lo que representaba una acción segura.
+4. **+15 puntos** si se dirigía hacia una celda con un pellet (valor 3), incentivando claramente este comportamiento.
+5. **-3 puntos** si el agente quedaba "atascado", es decir, el estado actual y el anterior eran iguales. Esto, para evitar que siempre quedara en una misma posición, que fue algo que sucedió con frecuencia en las distintas pruebas hechas.
+
+Los hiperparámetros utilizados fueron los siguientes:
+
+* **Learning rate = 0.1**: controla cuánto se actualizan los valores de la Q-table en función de las nuevas experiencias. Un valor bajo implica actualizaciones más conservadoras.
+* **Discount factor = 0.95**: representa cuánto se valoran las recompensas futuras frente a las inmediatas. Este valor alto incentiva planes a largo plazo.
+* **Epsilon = 1.0**: probabilidad inicial de explorar (tomar acciones aleatorias). Se comenzó con exploración total.
+* **Epsilon decay = 0.999**: con cada episodio, epsilon se reduce gradualmente, favoreciendo la explotación de lo aprendido a medida que avanza el entrenamiento.
+* **Epsilon mínimo = 0.01**: evita que el agente deje de explorar por completo, asegurando algo de aleatoriedad en la política final.
+
+Además, el agente fue entrenado durante 2000 episodios, debido a que la extracción de características (análisis de las observaciones visuales para formar el estado discreto) era computacionalmente costosa. Cada entrenamiento completo demoraba aproximadamente 12 horas en finalizar.
+
+Finalmente, tanto las recompensas como los hiperparámetros fueron incorporados en la fórmula principal del algoritmo Q-learning, que actualiza los valores de la Q-table de la siguiente manera:
+
+```python
+q_table[state][action - 1] = q_table[state][action - 1] + learning_rate * (reward_q_table + discount_factor * best_next - q_table[state][action - 1])
+```
+
+Donde:
+
+* `state` es el estado actual discretizado.
+* `action` es la acción tomada (se resta 1 porque las acciones estaban indexadas desde 1 en la tupla).
+* `learning_rate` determina cuánto se ajusta el valor actual de la Q-table según la nueva experiencia.
+* `discount_factor` pondera la importancia de las futuras recompensas.
+* `reward_q_table` representa la recompensa inmediata obtenida, que incluye no solo el valor de la acción (pellet, pared, fantasma, etc.) sino también posibles penalizaciones adicionales, como por ejemplo si el agente se encontraba atascado (es decir, repitiendo movimientos sin avanzar).
+* `best_next` corresponde al mayor valor Q posible en el próximo estado.
+
+Esta fórmula busca balancear la experiencia actual con la expectativa de futuras recompensas, ajustando el valor de la acción según el desempeño observado durante el entrenamiento.
 
 --- 
 
@@ -545,7 +591,7 @@ Este comportamiento es el esperado, ya que, nuevamente, el modo 0 es el modo del
 
 ---
 **Cantidad de fantasmas ingeridos**  
-Esta métrica permite medir el nivel de agresividad del agente. Es decir, cuanto le preocupa eliminar enemigos. Este indicador no sirve por sí solo, puesto que erróneamente se puede pensar que si tiene un nivel de agresividad alto está más cerca de ganar la partida, sin embargo, esto no es correcto. En algunas pruebas realizadas con diversas configuraciones, el agente comía fantasmas y luego se quedaba quieto sin realizar intentos de comer puntos, lo que en verdad conduce a la victoria. Por este motivo, esta métrica se debe utilizar en conjunto con las demás para determinar el verdadero desempeño del modelo.  
+Esta métrica permite medir el nivel de agresividad del agente. Es decir, cuánto le preocupa eliminar enemigos. Este indicador no sirve por sí solo, puesto que erróneamente se puede pensar que si tiene un nivel de agresividad alto está más cerca de ganar la partida, sin embargo, esto no es correcto. En algunas pruebas realizadas con diversas configuraciones, el agente comía fantasmas y luego se quedaba quieto sin realizar intentos de comer puntos, lo que en verdad conduce a la victoria. Por este motivo, esta métrica se debe utilizar en conjunto con las demás para determinar el verdadero desempeño del modelo.  
 
 Se observa que en el modo 0, nuevamente, se tiene el mejor resultado, puesto que el agente come la mayor cantidad de fantasmas. Por otro lado, el modo 5 y el modo 2 presentan resultados menores a 4, lo que indicaría que fallan en comer por lo menos 1 vez a cada fantasma. Adicionalmente, si sacamos los coeficientes de variación, se observa una variabilidad moderada (25%) en el modo 0, por lo que se elimina aproximadamente la misma cantidad de enemigos en las ejecuciones en este entorno. Sin embargo, en el modo 2 y 5 se tiene una variabilidad alta (49% y 47% respectivamente), lo que indicaría un comportamiento más inestable entre episodios.  
 
@@ -559,7 +605,7 @@ Si se observa el caso de la solución aleatoria y del Q-Learning, se contempla u
 
 ---
 **Winrate**  
-El objetivo del proyecto fue que el agente pudiera llegar a ganar una partida de Pac-Man, por lo que el winrate es la métrica que brinda la información acerca de si se alcanzó la meta. Se observa que en los entornos de los modos 0 y 5 el agente alcanzó a ganar partidas. A pesar de ser poca cantidad de victorias (2 veces por cada 100 ejecuciones), el objetivo fue alcanzado. Por otro lado, en el entorno del modo 0 el agente no ganó ni una sola vez. Esto indicaría que el modelo no fue capaz de adecuarse a la velocidad inferior de los fantasmas, pero que se adaptó bastante bien cuando la velocidad aumentaba.  
+El objetivo del proyecto fue que el agente pudiera llegar a ganar una partida de Pac-Man, por lo que el winrate es la métrica que brinda la información acerca de si se alcanzó la meta. Se observa que en los entornos de los modos 0 y 5 el agente alcanzó a ganar partidas. A pesar de ser poca cantidad de victorias (2 veces por cada 100 ejecuciones), el objetivo fue alcanzado. Por otro lado, en el entorno del modo 2 el agente no ganó ni una sola vez. Esto indicaría que el modelo no fue capaz de adecuarse a la velocidad inferior de los fantasmas, pero que se adaptó bastante bien cuando la velocidad aumentaba.  
 
 Nuevamente, debido a esta métrica se refuerza la conclusión de que DQN es superior a los anteriores algoritmos analizados para el problema, puesto que ellos ni siquiera pudieron alcanzar la victoria. Además, llegados a este punto se puede observar que el objetivo del proyecto fue alcanzado, es decir, siempre se buscó poder ganar una partida y, utilizando DQN, se pudo cumplir.  
 
