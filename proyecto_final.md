@@ -42,20 +42,19 @@
     - [Herramientas y entornos](#herramientas-y-entornos)
     - [Estrategia de entrenamiento](#estrategia-de-entrenamiento)
       - [Q-learning](#q-learning-1)
-      - [Discretización de estados](#discretización-de-estados)
-      - [Recompensas e hiperparámetros](#recompensas-e-hiperparámetros)
-      - [Q-Learning](#q-learning-2)
+        - [Discretización de estados](#discretización-de-estados)
+        - [Recompensas e hiperparámetros](#recompensas-e-hiperparámetros)
       - [DQN](#dqn)
       - [PPO](#ppo)
     - [Descripción de los experimentos](#descripción-de-los-experimentos)
     - [Resultados](#resultados)
       - [Random](#random)
-      - [Q-learning](#q-learning-3)
+      - [Q-learning](#q-learning-2)
       - [DQN](#dqn-1)
       - [PPO](#ppo-1)
   - [Análisis y Discusión de Resultados](#análisis-y-discusión-de-resultados)
     - [Random](#random-1)
-    - [Q-Learning](#q-learning-4)
+    - [Q-Learning](#q-learning-3)
     - [DQN](#dqn-2)
     - [PPO](#ppo-2)
   - [Conclusiones Finales](#conclusiones-finales)
@@ -233,7 +232,7 @@ Se realizaron los entrenamientos de los modelos de Q-learning, DQN, PPO. En los 
 
 ---
 
-#### Discretización de estados
+##### Discretización de estados
 Para discretizar los estados y poder aplicar Q-learning a Pac-Man, básicamente tomamos como estado una tupla en donde cada posición representa la posible acción a tomar (arriba, derecha, izquierda, abajo). Y el valor en cada posición de la tupla viene dado por el análisis de una imagen recortada que representa la situación actual del Pac-Man:
 
 * 0 si hay fantasmas hacia esa dirección,
@@ -291,9 +290,7 @@ En caso de que ninguna opción sea válida, se considera que esa zona está libr
 
 ---
 
-#### Recompensas e hiperparámetros
-
-#### Q-Learning  
+##### Recompensas e hiperparámetros
 
 Se experimentó con múltiples configuraciones de recompensas e hiperparámetros. En la mayoría de los casos, los valores aprendidos en la Q-table resultaron coherentes: las acciones con mayor valor estaban asociadas a posiciones donde la tupla del estado representaba una mejor situación (por ejemplo, evitar fantasmas o moverse hacia pellets).
 
