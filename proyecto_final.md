@@ -44,17 +44,18 @@
       - [Q-learning](#q-learning-1)
       - [Discretización de estados](#discretización-de-estados)
       - [Recompensas e hiperparámetros](#recompensas-e-hiperparámetros)
+      - [Q-Learning](#q-learning-2)
       - [DQN](#dqn)
       - [PPO](#ppo)
     - [Descripción de los experimentos](#descripción-de-los-experimentos)
     - [Resultados](#resultados)
       - [Random](#random)
-      - [Q-learning](#q-learning-2)
+      - [Q-learning](#q-learning-3)
       - [DQN](#dqn-1)
       - [PPO](#ppo-1)
   - [Análisis y Discusión de Resultados](#análisis-y-discusión-de-resultados)
     - [Random](#random-1)
-    - [Q-Learning](#q-learning-3)
+    - [Q-Learning](#q-learning-4)
     - [DQN](#dqn-2)
     - [PPO](#ppo-2)
   - [Conclusiones Finales](#conclusiones-finales)
@@ -126,7 +127,7 @@ La red se entrena minimizando la diferencia entre las predicciones y los valores
 
 #### Justificación de la elección
 
-DQN se eligió ya que resuelve la principal limitación de Q-learning, que es la imposibilidad de manejar espacios de estados grandes o continuos como los que presenta el entorno visual de Pac-Man, mediante el uso de redes convolucionales. Además, Pacman devuelve imágenes como observaciones y DQN es especialmente efectivo para procesarlas, esto lo hace una elección particularmente buena.
+DQN se eligió ya que resuelve la principal limitación de Q-learning, que es la imposibilidad de manejar espacios de estados grandes o continuos como los que presenta el entorno visual de Pac-Man, mediante el uso de redes convolucionales. Además, el entorno devuelve imágenes como observaciones y DQN es especialmente efectivo para procesarlas, esto lo hace una elección particularmente buena.
 
 ---
 
@@ -148,11 +149,11 @@ PPO se eligió ya que a diferencia de los dos algoritmos anteriores, este repres
 
 
 ### Métricas utilizadas
-Las métricas son importantes ya que permiten medir el desempeño de nuestras soluciones y posteriormente compararlas entre sí. Se tomaron en cuenta diferentes indicadores para tener en cuenta los diversos aspectos que presenta Pacman.
+Las métricas son importantes ya que permiten medir el desempeño de nuestras soluciones y posteriormente compararlas entre sí. Se tomaron en cuenta diferentes indicadores para tener en cuenta los diversos aspectos que presenta Pac-Man.
 
 #### Métrica integradora (Fantasmas + Puntos grandes + Puntos chicos)
 ##### Descripción
-La métrica integra la cantidad de fantasmas comidos y la cantidad de puntos grandes y puntos chicos ingeridos, ponderando cada uno de estos según su importancia. Es importante ya que estos 3 factores son los que más aportan al objetivo del proyecto, que el agente sea capaz de ganar una partida de Pacman. Otros aspectos no fueron tenidos en cuenta ya que no son verdaderamente relevantes para medir esto, por ejemplo, las frutas.
+La métrica integra la cantidad de fantasmas comidos y la cantidad de puntos grandes y puntos chicos ingeridos, ponderando cada uno de estos según su importancia. Es importante ya que estos 3 factores son los que más aportan al objetivo del proyecto, que el agente sea capaz de ganar una partida de Pac-Man. Otros aspectos no fueron tenidos en cuenta ya que no son verdaderamente relevantes para medir esto, por ejemplo, las frutas.
 ##### Cálculo
 Para calcularla se le dio más importancia a comer fantasmas junto a los puntos grandes y un poco menos a los puntos chicos. La fórmula utilizada fue:  
 
@@ -165,7 +166,7 @@ Mientras mayor el resultado, mejor el desempeño en general del agente. Resultad
 
 #### Cantidad de puntos chicos ingeridos
 ##### Descripción
-La métrica se trata de la cantidad de puntos chicos comidos por pacman. Es importante puesto que es la métrica más directa que brinda información acerca de cuán cerca estuvo el agente de ganar la partida, puesto que, el agente gana la partida cuando no queda ningún punto chico en el mapa.
+La métrica se trata de la cantidad de puntos chicos comidos por Pac-Man. Es importante puesto que es la métrica más directa que brinda información acerca de cuán cerca estuvo el agente de ganar la partida, puesto que, el agente gana la partida cuando no queda ningún punto chico en el mapa.
 ##### Cálculo
 Para calcularla se realiza la suma de todos los puntos recogidos por el agente.
 
@@ -209,7 +210,7 @@ Resultados elevados indican que el agente aprendió efectivamente a sobrevivir u
 Para el desarrollo del proyecto se utilizaron diversas herramientas con diferentes versiones. 
 Se utilizó el lenguaje de programación **Python** en su versión 3.10.11.
 
-Con respecto al entorno, se utilizó **ALE-py** [10] versión 0.8.1 junto a **Gymnasium** en su versión 0.29.1 y **AutoROM** en su versión 0.6.1. Específicamente se hizo uso de "Pacman-v5". Se investigó acerca de "MsPacman-v5" pero se seleccionó el primero debido a su simplicidad visual y técnica, pues este tenía menos acciones posibles y las características visuales eran menos complejas. Para el entrenamiento se utilizó el modo 0 y para las pruebas se utilizaron los modos 0, 2 y 5. El modo 2 enlentece a los fantasmas mientras que el modo 5 los acelera.
+Con respecto al entorno, se utilizó **ALE-py** [10] versión 0.8.1 junto a **Gymnasium** en su versión 0.29.1 y **AutoROM** en su versión 0.6.1. Específicamente se hizo uso de "Pac-Man-v5". Se investigó acerca de "MsPac-Man-v5" pero se seleccionó el primero debido a su simplicidad visual y técnica, pues este tenía menos acciones posibles y las características visuales eran menos complejas. Para el entrenamiento se utilizó el modo 0 y para las pruebas se utilizaron los modos 0, 2 y 5. El modo 2 enlentece a los fantasmas mientras que el modo 5 los acelera.
 
 Se utilizaron las implementaciones de PPO y DQN de **Stable-baselines3** en su versión 2.6.0. Para poder realizar los entrenamientos con GPU se hizo uso del software **ROCm** en su versión 6.3 debido a la compatibilidad con tarjetas de video AMD.
 
@@ -228,14 +229,14 @@ Se realizaron los entrenamientos de los modelos de Q-learning, DQN, PPO. En los 
 ---
 
 #### Discretización de estados
-Para discretizar los estados y poder aplicar Q-learning a Pac-Man, básicamente tomamos como estado una tupla en donde cada posición representa la posible acción a tomar (arriba, derecha, izquierda, abajo). Y el valor en cada posición de la tupla viene dado por el análisis de una imagen recortada que representa la situación actual del pacman:
+Para discretizar los estados y poder aplicar Q-learning a Pac-Man, básicamente tomamos como estado una tupla en donde cada posición representa la posible acción a tomar (arriba, derecha, izquierda, abajo). Y el valor en cada posición de la tupla viene dado por el análisis de una imagen recortada que representa la situación actual del Pac-Man:
 
 * 0 si hay fantasmas hacia esa dirección,
 * 1 si hay pared,
 * 2 si está libre (no hay ni pared, ni pellets, ni fantasmas), y
 * 3 si hay pellets.
 
-Por ejemplo, un posible estado podría ser: `(3, 0, 1, 2)`, por lo que el pacman ante esta situación debería decidir ir hacia arriba, que es la acción 1 que representa el mayor valor en este caso.
+Por ejemplo, un posible estado podría ser: `(3, 0, 1, 2)`, por lo que el Pac-Man ante esta situación debería decidir ir hacia arriba, que es la acción 1 que representa el mayor valor en este caso.
 
 Para mayor entendimiento, podemos ver las siguientes imágenes que muestran cómo se achica la observación centrada en Pac-Man, y luego se la divide en cuatro zonas (arriba, derecha, izquierda, abajo), excluyendo al Pac-Man para poder determinar qué hay en cada zona.
 
@@ -286,6 +287,8 @@ En caso de que ninguna opción sea válida, se considera que esa zona está libr
 ---
 
 #### Recompensas e hiperparámetros
+
+#### Q-Learning  
 
 Se experimentó con múltiples configuraciones de recompensas e hiperparámetros. En la mayoría de los casos, los valores aprendidos en la Q-table resultaron coherentes: las acciones con mayor valor estaban asociadas a posiciones donde la tupla del estado representaba una mejor situación (por ejemplo, evitar fantasmas o moverse hacia pellets).
 
@@ -346,7 +349,7 @@ Se realizaron diferentes pruebas para determinar las recompensas y los hiperpar�
 - buffer_size= 200000
 - batch_size = 32  
 
-Para entrenar el modelo se utilizaron 12.000.000 de timesteps.
+Además, para poder reducir la complejidad y mejorar el tiempo de entrenamiento, se hizo un preprocesamiento de las observaciones recibidas. Se transformaron a escala de grises y se reescalaron a una dimensión de 84x84. Por último, se apilaron 4 frames por observación con el objetivo de agregar temporalidad a las observaciones. Con respecto a los pasos utilizados para entrenar el modelo, se utilizaron 12.000.000.
 
 --- 
 
@@ -373,7 +376,7 @@ Se realizaron diferentes pruebas para determinar las recompensas y los hiperpar�
 - learning_rate=2.5e-4,
 - max_grad_norm=0.5,
 
-Para entrenar el modelo se utilizaron 12.000.000 de timesteps.  
+Nuevamente, se preprocesó las observaciones para reducir la complejidad y mejorar los tiempos de ejecución. El mismo fue similar que el del DQN, se transformó a escala de grises, se reescaló a 84x84, se añadio un canal de profundidad y se apiló 4 frames. Luego, para entrenar el modelo se utilizó la misma cantidad de timesteps que en DQN, es decir, 12.000.000.  
 
 --- 
 
@@ -576,59 +579,59 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 **Resultados de métrica integradora en 100 episodios**  
 
 <p align="center">
-  <img src="code/dqn/graficos/mode0/rewardsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/rewardsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/rewardsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/rewardsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/rewardsDQNPac-ManDqn12Million.png" width="30%" />
 </p>
 
 
 **Cantidad de puntos chicos ingeridos en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/pointsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/pointsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/pointsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/pointsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/pointsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/pointsDQNPac-ManDqn12Million.png" width="30%" />
 </p>
 
 **Cantidad de pasos dados en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/stepsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/stepsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/stepsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/stepsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/stepsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/stepsDQNPac-ManDqn12Million.png" width="30%" />
 </p>
 
 **Cantidad de fantasmas ingeridos en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/ghostsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/ghostsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/ghostsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/ghostsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/ghostsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/ghostsDQNPac-ManDqn12Million.png" width="30%" />
 </p>
 
 **Boxplots de métricas integradoras en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/boxplot_rewardsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/boxplot_rewardsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/boxplot_rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/boxplot_rewardsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_rewardsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_rewardsDQNPac-ManDqn12Million.png" width="30%" />
 </p>
 
 **Boxplots de puntos chicos ingeridos en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/boxplot_pointsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/boxplot_pointsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/boxplot_pointsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/boxplot_pointsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_pointsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_pointsDQNPac-ManDqn12Million.png" width="30%" />
 </p>
 
 **Boxplots de pasos dados en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/boxplot_stepsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/boxplot_stepsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/boxplot_stepsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/boxplot_stepsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_stepsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_stepsDQNPac-ManDqn12Million.png" width="30%" />
 </p>
 
 **Boxplots de fantasmas ingeridos en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/boxplot_ghostsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/boxplot_ghostsDQNpacmanDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/boxplot_ghostsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/boxplot_ghostsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_ghostsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_ghostsDQNPac-ManDqn12Million.png" width="30%" />
 </p>  
 
 ----
