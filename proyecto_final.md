@@ -584,59 +584,59 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 **Resultados de métrica integradora en 100 episodios**  
 
 <p align="center">
-  <img src="code/dqn/graficos/mode0/rewardsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/rewardsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/rewardsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/rewardsDQNpacmanDqn12Million.png" width="30%" />
 </p>
 
 
 **Cantidad de puntos chicos ingeridos en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/pointsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/pointsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/pointsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/pointsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/pointsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/pointsDQNpacmanDqn12Million.png" width="30%" />
 </p>
 
 **Cantidad de pasos dados en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/stepsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/stepsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/stepsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/stepsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/stepsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/stepsDQNpacmanDqn12Million.png" width="30%" />
 </p>
 
 **Cantidad de fantasmas ingeridos en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/ghostsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/ghostsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/ghostsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/ghostsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/ghostsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/ghostsDQNpacmanDqn12Million.png" width="30%" />
 </p>
 
 **Boxplots de métricas integradoras en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/boxplot_rewardsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/boxplot_rewardsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/boxplot_rewardsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/boxplot_rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_rewardsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_rewardsDQNpacmanDqn12Million.png" width="30%" />
 </p>
 
 **Boxplots de puntos chicos ingeridos en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/boxplot_pointsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/boxplot_pointsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/boxplot_pointsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/boxplot_pointsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_pointsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_pointsDQNpacmanDqn12Million.png" width="30%" />
 </p>
 
 **Boxplots de pasos dados en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/boxplot_stepsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/boxplot_stepsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/boxplot_stepsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/boxplot_stepsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_stepsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_stepsDQNpacmanDqn12Million.png" width="30%" />
 </p>
 
 **Boxplots de fantasmas ingeridos en 100 episodios**  
 <p align="center">
-  <img src="code/dqn/graficos/mode0/boxplot_ghostsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode2/boxplot_ghostsDQNPac-ManDqn12Million.png" width="30%" />
-  <img src="code/dqn/graficos/mode5/boxplot_ghostsDQNPac-ManDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode0/boxplot_ghostsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode2/boxplot_ghostsDQNpacmanDqn12Million.png" width="30%" />
+  <img src="code/dqn/graficos/mode5/boxplot_ghostsDQNpacmanDqn12Million.png" width="30%" />
 </p>  
 
 ----
