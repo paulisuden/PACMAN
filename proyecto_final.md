@@ -480,6 +480,10 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 ---
 #### Q-learning
 
+<div align="center">
+  <img src="./images/q-learning.gif" width="480" alt="Q-learning" />
+</div>  
+
 **Tabla resumen de promedios de métricas obtenidas**
 
 | Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
