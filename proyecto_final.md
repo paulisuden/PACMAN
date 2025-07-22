@@ -16,7 +16,6 @@
       - [Justificación de la elección](#justificación-de-la-elección-1)
     - [Proximal Policy Optimization (PPO)](#proximal-policy-optimization-ppo)
       - [Justificación de la elección](#justificación-de-la-elección-2)
-    - [Ambientes ALE y Gymnasium](#ambientes-ale-y-gymnasium)
   - [Diseño Experimental](#diseño-experimental)
     - [Métricas utilizadas](#métricas-utilizadas)
       - [Métrica integradora (Fantasmas + Puntos grandes + Puntos chicos)](#métrica-integradora-fantasmas--puntos-grandes--puntos-chicos)
@@ -44,6 +43,7 @@
     - [Estrategia de entrenamiento](#estrategia-de-entrenamiento)
       - [Q-learning](#q-learning-1)
       - [Discretización de estados](#discretización-de-estados)
+      - [Recompensas e hiperparámetros](#recompensas-e-hiperparámetros)
       - [DQN](#dqn)
       - [PPO](#ppo)
     - [Descripción de los experimentos](#descripción-de-los-experimentos)
@@ -391,7 +391,13 @@ Por otro lado, las métricas nos permitieron comparar entre los distintos algori
 ### Resultados
 Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.  
 
-#### Random
+#### Random  
+
+<div align="center">
+  <img src="./images/random.gif" width="480" alt="Random" />
+</div>  
+
+
 **Tabla resumen de promedios de métricas obtenidas**
 
 | Entorno | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate |
@@ -545,6 +551,11 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 
 ---
 #### DQN  
+
+<div align="center">
+  <img src="./images/dqn.gif" width="480" alt="Random" />
+</div>  
+
 **Tabla resumen de promedios de métricas obtenidas**
 
 | Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
@@ -622,7 +633,11 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 
 ----
 
-#### PPO
+#### PPO  
+<div align="center">
+  <img src="./images/ppo.gif" width="480" alt="Random" />
+</div>  
+
 **Tabla resumen de métricas obtenidas**
 
 | Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
