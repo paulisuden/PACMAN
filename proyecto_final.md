@@ -16,7 +16,6 @@
       - [Justificación de la elección](#justificación-de-la-elección-1)
     - [Proximal Policy Optimization (PPO)](#proximal-policy-optimization-ppo)
       - [Justificación de la elección](#justificación-de-la-elección-2)
-    - [Ambientes ALE y Gymnasium](#ambientes-ale-y-gymnasium)
   - [Diseño Experimental](#diseño-experimental)
     - [Métricas utilizadas](#métricas-utilizadas)
       - [Métrica integradora (Fantasmas + Puntos grandes + Puntos chicos)](#métrica-integradora-fantasmas--puntos-grandes--puntos-chicos)
@@ -43,7 +42,8 @@
     - [Herramientas y entornos](#herramientas-y-entornos)
     - [Estrategia de entrenamiento](#estrategia-de-entrenamiento)
       - [Q-learning](#q-learning-1)
-      - [Discretización de estados](#discretización-de-estados)
+        - [Discretización de estados](#discretización-de-estados)
+        - [Recompensas e hiperparámetros](#recompensas-e-hiperparámetros)
       - [DQN](#dqn)
       - [PPO](#ppo)
     - [Descripción de los experimentos](#descripción-de-los-experimentos)
@@ -126,7 +126,7 @@ La red se entrena minimizando la diferencia entre las predicciones y los valores
 
 #### Justificación de la elección
 
-DQN se eligió ya que resuelve la principal limitación de Q-learning, que es la imposibilidad de manejar espacios de estados grandes o continuos como los que presenta el entorno visual de Pac-Man, mediante el uso de redes convolucionales. Además, Pacman devuelve imágenes como observaciones y DQN es especialmente efectivo para procesarlas, esto lo hace una elección particularmente buena.
+DQN se eligió ya que resuelve la principal limitación de Q-learning, que es la imposibilidad de manejar espacios de estados grandes o continuos como los que presenta el entorno visual de Pac-Man, mediante el uso de redes convolucionales. Además, el entorno devuelve imágenes como observaciones y DQN es especialmente efectivo para procesarlas, esto lo hace una elección particularmente buena.
 
 ---
 
@@ -142,33 +142,17 @@ PPO se eligió ya que a diferencia de los dos algoritmos anteriores, este repres
 
 ---
 
-### Ambientes ALE y Gymnasium
-
-El entorno utilizado para entrenar al agente es el de Pacman-v5 de la librería Gymnasium, que utiliza ALE (Arcade Learning Environment) como backend. Este entorno representa el juego original de Atari y proporciona imágenes RGB como observación (resolución de 210x160 píxeles) y un espacio de acciones discretas. [1]
-
-Para poder aplicar RL, es necesario utilizar wrappers personalizados, como:
-
-- Reducción de dimensiones y colores.
-
-- Limitación del conjunto de acciones a solo las necesarias (LEFT, RIGHT, UP, DOWN).
-
-- Modificación de recompensas al ejecutar acciones.
-
-- Stack de frames para representar movimiento.
-
----
-
 
 ## Diseño Experimental
 
 
 
 ### Métricas utilizadas
-Las métricas son importantes ya que permiten medir el desempeño de nuestras soluciones y posteriormente compararlas entre sí. Se tomaron en cuenta diferentes indicadores para tener en cuenta los diversos aspectos que presenta Pacman.
+Las métricas son importantes ya que permiten medir el desempeño de nuestras soluciones y posteriormente compararlas entre sí. Se tomaron en cuenta diferentes indicadores para tener en cuenta los diversos aspectos que presenta Pac-Man.
 
 #### Métrica integradora (Fantasmas + Puntos grandes + Puntos chicos)
 ##### Descripción
-La métrica integra la cantidad de fantasmas comidos y la cantidad de puntos grandes y puntos chicos ingeridos, ponderando cada uno de estos según su importancia. Es importante ya que estos 3 factores son los que más aportan al objetivo del proyecto, que el agente sea capaz de ganar una partida de Pacman. Otros aspectos no fueron tenidos en cuenta ya que no son verdaderamente relevantes para medir esto, por ejemplo, las frutas.
+La métrica integra la cantidad de fantasmas comidos y la cantidad de puntos grandes y puntos chicos ingeridos, ponderando cada uno de estos según su importancia. Es importante ya que estos 3 factores son los que más aportan al objetivo del proyecto, que el agente sea capaz de ganar una partida de Pac-Man. Otros aspectos no fueron tenidos en cuenta ya que no son verdaderamente relevantes para medir esto, por ejemplo, las frutas.
 ##### Cálculo
 Para calcularla se le dio más importancia a comer fantasmas junto a los puntos grandes y un poco menos a los puntos chicos. La fórmula utilizada fue:  
 
@@ -181,7 +165,7 @@ Mientras mayor el resultado, mejor el desempeño en general del agente. Resultad
 
 #### Cantidad de puntos chicos ingeridos
 ##### Descripción
-La métrica se trata de la cantidad de puntos chicos comidos por pacman. Es importante puesto que es la métrica más directa que brinda información acerca de cuán cerca estuvo el agente de ganar la partida, puesto que, el agente gana la partida cuando no queda ningún punto chico en el mapa.
+La métrica se trata de la cantidad de puntos chicos comidos por Pac-Man. Es importante puesto que es la métrica más directa que brinda información acerca de cuán cerca estuvo el agente de ganar la partida, puesto que, el agente gana la partida cuando no queda ningún punto chico en el mapa.
 ##### Cálculo
 Para calcularla se realiza la suma de todos los puntos recogidos por el agente.
 
@@ -225,7 +209,12 @@ Resultados elevados indican que el agente aprendió efectivamente a sobrevivir u
 Para el desarrollo del proyecto se utilizaron diversas herramientas con diferentes versiones. 
 Se utilizó el lenguaje de programación **Python** en su versión 3.10.11.
 
-Con respecto al entorno, se utilizó **ALE-py** [10] versión 0.8.1 junto a **Gymnasium** en su versión 0.29.1 y **AutoROM** en su versión 0.6.1. Específicamente se hizo uso de "Pacman-v5". Se investigó acerca de "MsPacman-v5" pero se seleccionó el primero debido a su simplicidad visual y técnica, pues este tenía menos acciones posibles y las características visuales eran menos complejas. Para el entrenamiento se utilizó el modo 0 y para las pruebas se utilizaron los modos 0, 2 y 5. El modo 2 enlentece a los fantasmas mientras que el modo 5 los acelera.
+Con respecto al entorno, se utilizó **ALE-py** [10] versión 0.8.1 junto a **Gymnasium** en su versión 0.29.1 y **AutoROM** en su versión 0.6.1. Específicamente se hizo uso de "Pac-Man-v5". Se investigó acerca de "MsPac-Man-v5" pero se seleccionó el primero debido a su simplicidad visual y técnica, pues este tenía menos acciones posibles y las características visuales eran menos complejas. Para el entrenamiento se utilizó el modo 0 y para las pruebas se utilizaron los modos 0, 2 y 5. El modo 2 enlentece a los fantasmas mientras que el modo 5 los acelera.
+
+<div align="center">
+  <img src="./images/dqn.gif" width="480" alt="Random" />
+</div>  
+
 
 Se utilizaron las implementaciones de PPO y DQN de **Stable-baselines3** en su versión 2.6.0. Para poder realizar los entrenamientos con GPU se hizo uso del software **ROCm** en su versión 6.3 debido a la compatibilidad con tarjetas de video AMD.
 
@@ -243,15 +232,15 @@ Se realizaron los entrenamientos de los modelos de Q-learning, DQN, PPO. En los 
 
 ---
 
-#### Discretización de estados
-Para discretizar los estados y poder aplicar Q-learning a Pac-Man, básicamente tomamos como estado una tupla en donde cada posición representa la posible acción a tomar (arriba, derecha, izquierda, abajo). Y el valor en cada posición de la tupla viene dado por el análisis de una imagen recortada que representa la situación actual del pacman:
+##### Discretización de estados
+Para discretizar los estados y poder aplicar Q-learning a Pac-Man, básicamente tomamos como estado una tupla en donde cada posición representa la posible acción a tomar (arriba, derecha, izquierda, abajo). Y el valor en cada posición de la tupla viene dado por el análisis de una imagen recortada que representa la situación actual del Pac-Man:
 
 * 0 si hay fantasmas hacia esa dirección,
 * 1 si hay pared,
 * 2 si está libre (no hay ni pared, ni pellets, ni fantasmas), y
 * 3 si hay pellets.
 
-Por ejemplo, un posible estado podría ser: `(3, 0, 1, 2)`, por lo que el pacman ante esta situación debería decidir ir hacia arriba, que es la acción 1 que representa el mayor valor en este caso.
+Por ejemplo, un posible estado podría ser: `(3, 0, 1, 2)`, por lo que el Pac-Man ante esta situación debería decidir ir hacia arriba, que es la acción 1 que representa el mayor valor en este caso.
 
 Para mayor entendimiento, podemos ver las siguientes imágenes que muestran cómo se achica la observación centrada en Pac-Man, y luego se la divide en cuatro zonas (arriba, derecha, izquierda, abajo), excluyendo al Pac-Man para poder determinar qué hay en cada zona.
 
@@ -301,7 +290,7 @@ En caso de que ninguna opción sea válida, se considera que esa zona está libr
 
 ---
 
-#### Recompensas e hiperparámetros
+##### Recompensas e hiperparámetros
 
 Se experimentó con múltiples configuraciones de recompensas e hiperparámetros. En la mayoría de los casos, los valores aprendidos en la Q-table resultaron coherentes: las acciones con mayor valor estaban asociadas a posiciones donde la tupla del estado representaba una mejor situación (por ejemplo, evitar fantasmas o moverse hacia pellets).
 
@@ -362,7 +351,7 @@ Se realizaron diferentes pruebas para determinar las recompensas y los hiperpar�
 - buffer_size= 200000
 - batch_size = 32  
 
-Para entrenar el modelo se utilizaron 12.000.000 de timesteps.
+Además, para poder reducir la complejidad y mejorar el tiempo de entrenamiento, se hizo un preprocesamiento de las observaciones recibidas. Se transformaron a escala de grises y se reescalaron a una dimensión de 84x84. Por último, se apilaron 4 frames por observación con el objetivo de agregar temporalidad a las observaciones. Con respecto a los pasos utilizados para entrenar el modelo, se utilizaron 12.000.000.
 
 --- 
 
@@ -389,7 +378,7 @@ Se realizaron diferentes pruebas para determinar las recompensas y los hiperpar�
 - learning_rate=2.5e-4,
 - max_grad_norm=0.5,
 
-Para entrenar el modelo se utilizaron 12.000.000 de timesteps.  
+Nuevamente, se preprocesó las observaciones para reducir la complejidad y mejorar los tiempos de ejecución. El mismo fue similar que el del DQN, se transformó a escala de grises, se reescaló a 84x84, se añadio un canal de profundidad y se apiló 4 frames. Luego, para entrenar el modelo se utilizó la misma cantidad de timesteps que en DQN, es decir, 12.000.000.  
 
 --- 
 
@@ -407,7 +396,13 @@ Por otro lado, las métricas nos permitieron comparar entre los distintos algori
 ### Resultados
 Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.  
 
-#### Random
+#### Random  
+
+<div align="center">
+  <img src="./images/random.gif" width="480" alt="Random" />
+</div>  
+
+
 **Tabla resumen de promedios de métricas obtenidas**
 
 | Entorno | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate |
@@ -561,6 +556,11 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 
 ---
 #### DQN  
+
+<div align="center">
+  <img src="./images/dqn.gif" width="480" alt="Random" />
+</div>  
+
 **Tabla resumen de promedios de métricas obtenidas**
 
 | Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
@@ -638,7 +638,11 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 
 ----
 
-#### PPO
+#### PPO  
+<div align="center">
+  <img src="./images/ppo.gif" width="480" alt="Random" />
+</div>  
+
 **Tabla resumen de métricas obtenidas**
 
 | Entorno               | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate
@@ -717,41 +721,71 @@ Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.
 ## Análisis y Discusión de Resultados
 
 ### Random
+
 **Métrica integradora**
-Podemos ver que tanto en el modo 0 como en el modo 5, el promedio es bastante parecido, aunque en el modo 5 hubo un episodio que llegó a los 40 puntos, mientras que en el modo 0 el mayor puntaje está entre los 20 y 25 puntos. Ahora bien, en el modo 2 hay una diferencia notable en esta métrica, ya que el promedio sube a 38.49 y, el mayor valor supera los 80 puntos, por lo que podemos pensar que, como los fantasmas tienen una velocidad mucho menor en este modo, favorece al agente random a comer más puntos ya que los fantasmas ce acercarán a él más lentamente.
+
+Los resultados del agente aleatorio muestran un desempeño muy bajo en los tres modos. Al no tener una política definida, el comportamiento del agente es completamente errático, lo cual se ve reflejado en los bajos valores de reward promedio, especialmente en los modos 0 y 5, con apenas 13.28 y 14.6 respectivamente. Curiosamente, en el modo 2 (donde los fantasmas se mueven más lento) el promedio sube considerablemente a 38.49, lo que indica que al haber menor presión del entorno, incluso una política aleatoria puede desenvolverse mejor.
+
+Sin embargo, esto no debe interpretarse como un “buen resultado”, ya que las desviaciones estándar en este modo (25.30) son muy altas, lo cual evidencia una gran variabilidad y falta de consistencia en las ejecuciones. Este es un claro indicador de que el agente no aprende ni sigue una estrategia confiable, y los buenos resultados que aparecen son únicamente producto del azar.
 
 **Cantidad de puntos chicos ingeridos**
 
+Esta métrica presenta un patrón similar al reward: muy bajos valores en los modos 0 (13.28) y 5 (14.6), y un incremento en el modo 2 (37.13). Como no hay fantasmas rápidos que lo maten inmediatamente, el agente sobrevive más tiempo y eventualmente recoge más puntos. Sin embargo, las desviaciones estándar, que son bajas, indican que el comportamiento es erráticamente consistente: el agente en general se desempeña mal, pero siempre de forma parecida. Esto puede debrse a que no cuenta con un objetivo o política.
 
 **Cantidad de fantasmas ingeridos**
 
+El agente aleatorio no logra comer ningún fantasma en ninguno de los modos salvo en el modo 2 (que come aproximadamente 4 en los 100 episodios). Esto es esperable, ya que para comerse un fantasma se requiere primero obtener un punto grande, y luego encontrar a un enemigo vulnerable, algo improbable para un agente random. 
 
 **Promedio de pasos dados**
 
+En cuanto a la cantidad de pasos, el agente aleatorio muestra valores altos en el modo 2 (900.39), y más bajos en los otros modos (430.58 en modo 0 y 403.58 en modo 5). Esto tiene sentido, ya que en el modo 2 sobrevive más tiempo al no ser comido tan rápidamente. Sin embargo, estos pasos no se traducen necesariamente en buen desempeño. Es decir, el agente se mueve mucho, pero sin lograr buenos resultados. Además, la alta desviación estándar en los pasos (especialmente en modo 2 con 290.43) refuerza la idea de que el comportamiento es muy variable y no confiable.
 
 **Winrate**
 
+No se observan victorias en ninguno de los modos, lo cual es completamente esperable. La política aleatoria simplemente no alcanza la capacidad de ganar partidas, ni siquiera en entornos sencillos. Esto reafirma que no basta con moverse por el entorno sin una estrategia clara.
 
 **Conclusión**
 
+El agente random presenta un comportamiento extremadamente limitado y errático, sin capacidad de adaptación ni aprendizaje. Su desempeño es apenas aceptable en el entorno fácil (modo 2), pero esto seguramente de debe más a la falta de presión por parte de los fantasmas que a una estrategia. En todos los casos, se observa una que no existe posibilidad de alcanzar el objetivo principal del proyecto, el cual es ganar una partida.
+
+---
 ### Q-Learning
+
 **Métrica integradora**
 
+Q-Learning mejora en todos los entornos respecto al agente aleatorio, lo que se observa en los incrementos en las recompensas promedio: de 13.28 a 24.1 en modo 0, de 38.49 a 42.49 en modo 2, y de 14.6 a 26.17 en modo 5. Estos valores muestran que el agente, aunque básico, logra aprender una política que le permite comportarse de forma más eficiente que el azar.
+
+Por otro lado, se observa que las desviaciones estándar son menores que las del agente random, lo que nos puede indicar un comportamiento más estable, aunque sigue siendo mejorable.
 
 **Cantidad de puntos chicos ingeridos**
 
+Esta métrica sigue un patrón similar a la métrica integradora, con mejoras claras respecto a random en todos los entornos. El agente aprende a recolectar más puntos, especialmente en el modo 2, pero sigue muy lejos de los 126 puntos necesarios para una victoria.
+
+Aun así, el aumento en esta métrica muestra que Q-Learning es capaz de dirigir al agente hacia los puntos de forma mucho más eficiente que el agente aleatorio. Además, a diferencia del random, las desviaciones estándar son mucho más significativas (por ejemplo, 11.81 en modo 2), lo que podría reflejar exploraciones más activas o diferencias entre episodios en donde el agente captura más puntos.
 
 **Cantidad de fantasmas ingeridos**
 
+Aunque la mejora respecto a Random es mínima (0.02 en modo 2 y 5, frente a 0.0), esta métrica sigue siendo baja en todos los casos. El agente rara vez come fantasmas, y esto probablemente se debe a que en la discretización de estados, no se incluye el hecho de detectar cuándo los fantasmas están vulnerables para dejar de evitarlos e ir hacia ellos. Esto se debe a la complejidad de detectar esta situación y poder discretizarla correctamente.
+
+Sin embargo, el hecho de que la desviación estándar ya no sea cero (0.14) sugiere que en al menos algunos episodios, el agente logró hacerlo, lo que representa una diferencia importante frente al agente completamente aleatorio.
 
 **Promedio de pasos dados**
 
+Los valores de pasos también presentan una mejora respecto a Random, especialmente en el entorno fácil (modo 2), donde se duplica el tiempo de supervivencia: de 900.39 a 1864.57. Esto indica que el agente aprende a evitar enemigos, o al menos no muere inmediatamente. Aun así, esto no garantiza buenos resultados si no logra convertir estos pasos en puntos.
+
+En los otros entornos, también mejora, pero no de forma tan marcada. Además, en modo 2, la desviación estándar es muy alta (1571.79), lo que muestra un comportamiento muy variable: a veces sobrevive mucho y otras veces poco. Este nivel de inestabilidad puede deberse a análisis subóptimos del contexto del Pac-Man que lo hacen vulnerable en algunas configuraciones del entorno.
 
 **Winrate**
 
+Al igual que el agente aleatorio, Q-Learning no logra ninguna victoria en ninguna de las ejecuciones. Esto sugiere que, si bien mejora significativamente el desempeño general, todavía no alcanza el nivel necesario para finalizar una partida de forma exitosa. La política aprendida no logra adaptarse del todo al entorno y se queda corta en momentos críticos del juego, lo que impide alcanzar el objetivo final del proyecto.
 
 **Conclusión**
 
+Q-Learning presenta una mejora clara y consistente respecto al agente aleatorio. Logra un desempeño más estable, mayores recompensas, más puntos chicos y mejor supervivencia. A pesar de esto, no alcanza el nivel suficiente para resolver completamente el juego ya que no come fantasmas de forma eficiente ni gana partidas.
+
+Una de las principales limitaciones de Q-Learning en este contexto es su necesidad de operar sobre un espacio de estados discreto y manejable. Sin embargo, el entorno de Pac-Man presenta un espacio de observación muy amplio y complejo que es difícil de representar en forma tabular. Esto, requiere aplicar técnicas de discretización que, en general, pierden información relevante lo que dificulta el aprendizaje de una política eficaz. Por este motivo, Q-Learning no resulta el algoritmo más adecuado para entornos como Pac-Man. Aun así, representa un buen paso intermedio hacia soluciones más sofisticadas como DQN.
+
+---
 ### DQN  
 **Métrica integradora**  
 Se observa una mejora significativa con respecto a la solución aleatoria y al Q-Learning en los 3 modos. Esto muestra que el agente gana más puntos y come más fantasmas lo que indica un buen desempeño global en el juego. Sin embargo, si observamos las diferencias entre los 3 modos, vemos que, aún siendo un buen resultado, logra un peor desempeño en los 2 entornos que no conoce. Esto tiene sentido, ya que el entorno con el modo 0 fue el entorno utilizado para su entrenamiento, por lo que ya tiene conocimientos acerca de este. Con esto, se puede deducir que logra aprender una función Q que se adecúa correctamente al entorno para el cual entrenó.  
@@ -760,21 +794,21 @@ Por otro lado, se observa que para el modo 2 tiene un desempeño inferior, aún 
 
 Por último, en los diagramas de cajas, en los modos 0 y 5 se observan algunos datos atípicos que se alejan considerablemente del resto de los datos, lo que indicaría que hubo ejecuciones que llegaron a ganar la partida.  
 
-Considerando únicamente esta métrica, se podría plantear una conclusión tentativa de que el modelo entrenado funciona adecuadamente en los modos 0 y 5, mientras que en el modo 2, si bien no alcanza resultados ideales, el rendimiento sigue siendo considerablemente alto. Por esto, DQN sería un algoritmo adecuado para Pac-Man.  
+Considerando únicamente esta métrica, se observa que el modelo entrenado funciona adecuadamente en los modos 0 y 5, mientras que en el modo 2, si bien no alcanza resultados ideales, el rendimiento sigue siendo considerablemente alto. Por esto, DQN sería un algoritmo adecuado para Pac-Man.  
 
----
+
 **Cantidad de puntos chicos ingeridos**   
 Con esta métrica se mide que tan cerca estuvo el agente de ganar la partida puesto que al superar los 126 puntos, se considera una victoria. Se observa un comportamiento similar al anterior. Es decir, el promedio de puntos chicos ingeridos en el modo 0 da muy cercano al puntaje necesario para ganar, esto junto a la desviación estándar moderada indicaría un buen desempeño por parte del agente en la mayoría de ejecuciones. En el modo 5 el desempeño sigue siendo bastante bueno, aunque ligeramente menor y en el modo 2 ya decae 6 puntos con respecto al modo normal. Sin embargo, en el modo 2 la desviación estándar es muy chica, lo que indicaría mayor estabilidad entre las ejecuciones.  
 
-Este comportamiento es el esperado, ya que, nuevamente, el modo 0 es el modo del entorno para el cuál se entrenó, por lo que ya tiene conocimientos del mismo. Sin embargo, a pesar de las diferencias entre los 3, los resultados siguen siendo satisfactorios, ya que solo viendo el promedio podríamos deducir que en la mayoría de los casos el agente se encuentra cerca de ganar. Además, si se visualizan los diagramas de cajas, se observan datos atípicos en los entornos de los modos 0 y 5, superando los 225 puntos, lo que indicaría que el agente ganó en esas 2 ejecuciones. Nuevamente, se refuerza la conclusión tentativa de que DQN fue una correcta elección para resolver el juego y es completamente superior a la solución aleatoria y a Q-Learning.  
+Este comportamiento es el esperado, ya que, nuevamente, el modo 0 es el modo del entorno para el cuál se entrenó, por lo que ya tiene conocimientos del mismo. Sin embargo, a pesar de las diferencias entre los 3, los resultados siguen siendo satisfactorios, ya que solo viendo el promedio podríamos deducir que en la mayoría de los casos el agente se encuentra cerca de ganar. Además, si se visualizan los diagramas de cajas, se observan datos atípicos en los entornos de los modos 0 y 5, superando los 225 puntos, lo que indicaría que el agente ganó en esas 2 ejecuciones. Nuevamente, se refuerza la conclusión tentativa de que DQN fue una correcta elección para resolver el juego.
 
----
+
 **Cantidad de fantasmas ingeridos**  
 Esta métrica permite medir el nivel de agresividad del agente. Es decir, cuánto le preocupa eliminar enemigos. Este indicador no sirve por sí solo, puesto que erróneamente se puede pensar que si tiene un nivel de agresividad alto está más cerca de ganar la partida, sin embargo, esto no es correcto. En algunas pruebas realizadas con diversas configuraciones, el agente comía fantasmas y luego se quedaba quieto sin realizar intentos de comer puntos, lo que en verdad conduce a la victoria. Por este motivo, esta métrica se debe utilizar en conjunto con las demás para determinar el verdadero desempeño del modelo.  
 
 Se observa que en el modo 0, nuevamente, se tiene el mejor resultado, puesto que el agente come la mayor cantidad de fantasmas. Por otro lado, el modo 5 y el modo 2 presentan resultados menores a 4, lo que indicaría que fallan en comer por lo menos 1 vez a cada fantasma. Adicionalmente, si sacamos los coeficientes de variación, se observa una variabilidad moderada (25%) en el modo 0, por lo que se elimina aproximadamente la misma cantidad de enemigos en las ejecuciones en este entorno. Sin embargo, en el modo 2 y 5 se tiene una variabilidad alta (49% y 47% respectivamente), lo que indicaría un comportamiento más inestable entre episodios.  
 
----
+
 **Promedio de pasos dados**  
 El promedio de pasos dados es una métrica que nos permite evaluar el nivel de supervivencia de los agentes. Es decir, cuanto "tiempo" sobrevivió. Al igual que en el caso anterior, esta métrica por sí sola no es un buen indicador de desempeño, puesto que el agente puede concentrarse solo en sobrevivir sin ganar ningún punto, lo que no le ayudaría a ganar la partida. Sin embargo, puede utilizarse con otras métricas, por ejemplo, se puede observar la cantidad de puntos chicos ingeridos y visualizar la velocidad con la que consigue esos puntos.  
 
@@ -782,19 +816,18 @@ En este caso, se observa como el agente en el modo 5 tiene la mayor cantidad de 
 
 Si se observa el caso de la solución aleatoria y del Q-Learning, se contempla una clara superioridad del DQN. El agente sobrevive mucha más cantidad de tiempo que en el resto, indicando que el mismo aprendió correctamente a sobrevivir dentro del entorno.  
 
----
+
 **Winrate**  
 El objetivo del proyecto fue que el agente pudiera llegar a ganar una partida de Pac-Man, por lo que el winrate es la métrica que brinda la información acerca de si se alcanzó la meta. Se observa que en los entornos de los modos 0 y 5 el agente alcanzó a ganar partidas. A pesar de ser poca cantidad de victorias (2 veces por cada 100 ejecuciones), el objetivo fue alcanzado. Por otro lado, en el entorno del modo 2 el agente no ganó ni una sola vez. Esto indicaría que el modelo no fue capaz de adecuarse a la velocidad inferior de los fantasmas, pero que se adaptó bastante bien cuando la velocidad aumentaba.  
 
-Nuevamente, debido a esta métrica se refuerza la conclusión de que DQN es superior a los anteriores algoritmos analizados para el problema, puesto que ellos ni siquiera pudieron alcanzar la victoria. Además, llegados a este punto se puede observar que el objetivo del proyecto fue alcanzado, es decir, siempre se buscó poder ganar una partida y, utilizando DQN, se pudo cumplir.  
+Los resultados obtenidos mediante esta métrica muestran que DQN supera a los algoritmos evaluados anteriormente, los cuales no lograron victorias. El hecho de que DQN sí lo lograra respalda su eficacia dentro del entorno, alineándose con los objetivos del proyecto.
 
----
 
 **Conclusión**  
 
 Teniendo en cuenta los resultados obtenidos, se puede concluir que DQN es un algoritmo con un muy alto rendimiento para Pac-Man, lo que lo hace una opción muy adecuada para utilizar. Además, presenta una clara superioridad con respecto a la solución aleatoria y al Q-Learning, puesto que superó a ambos en todos los índicadores analizados. Las únicas desventajas observadas en comparación a estos es que DQN es mucho más complejo que los otros dos y necesita un mayor tiempo de entrenamiento. Sin embargo, la ganancia obtenida gracias a su implementación es considerable.  
 
-
+---
 ### PPO
 **Métrica integradora**  
 Nuevamente, se observa una mejora significativa con respecto a la solución aleatoria y a Q-learning, sin embargo, en los entornos con modo 0 y 5 el resultado obtenido es ligeramente peor que utilizando DQN. A pesar de esto, en el entorno con el modo 2, PPO fue superior, aunque teniendo una mayor variabilidad. Esto puede deberse a que las recompensas utilizadas para el entrenamiento no fueron las mismas. Es decir, en el caso de PPO los puntos chicos valían 0.35 mientras que en DQN 0.3. Esto pudo ocasionar que el agente se concentrara más en comer puntos que en eliminar enemigos, lo cual afecta a esta métrica ya que tiene mayor valor el matar a un fantasma que el comer un punto.  
@@ -803,9 +836,9 @@ Además, se observa que el agente tiene un mejor desempeño en el entorno con mo
 
 Por otro lado, al observar los diagramas de cajas podemos ver datos atípicos con valores superiores a 250 en los entornos con los modos 0 y 2. Esto podría indicar que los agentes ganaron la partida en dichos contextos.   
 
-Solo observando esta métrica, se puede elaborar una conclusión tentativa de que PPO ofrece unos excelentes resultados a la hora de jugar Pac-Man. Es mucho mejor que la solución aleatoria y Q-learning, pero se queda ligeramente atrás con respecto a DQN.  
+El análisis de esta métrica sugiere que PPO logra desempeños sobresalientes frente a otros enfoques distintos como la solución aleatoria o Q-learning, aunque no alcanza el nivel de desempeño observado con DQN. 
 
----
+
 **Cantidad de puntos chicos ingeridos**  
 Con esta métrica se repite la misma situación que en el caso de DQN, es decir, el entorno con el modo 0 tenía muy buenos resultados, le seguía el del modo 5 y finalmente el del modo 2. Sin embargo, se observa que en este caso, la diferencia entre los resultados de los agentes en los entornos con los modos 2 y 5 es prácticamente nula, por lo que ambos obtuvieron aproximadamente la misma cantidad de puntos, con una ligera ventaja por parte del entorno con el modo 5, puesto que la desviación estándar es muy baja, lo que indica que en la mayoría de las ejecuciones se obtuvieron cantidades de puntos similares. 
 
@@ -815,17 +848,17 @@ Adicionalmente, si se tiene en cuenta el diagrama de caja, se puede observar, nu
 
 Teniendo en cuenta esta métrica, por el contrario que en el caso anterior, se observa una ligera ventaja por parte del PPO frente al DQN. Sin embargo, sigue predominando frente a la solución aleatoria y a la solución Q-learning.
 
----
+
 **Cantidad de fantasmas ingeridos**   
 En este caso, se observa que el agente comió aproximadamente la misma cantidad de fantasmas en promedio en los 3 entornos. Sin embargo, hay una mayor variación en los entornos con modos 2 y 5, esto es posible verlo mediante el coeficiente de variación, el cual es 35% y 37% respectivamente. A pesar de esto, es posible notar que la agresividad del agente no es tanta, incluso pudiendo considerarlo como un comportamiento pasivo, ya que en promedio no alcanzó a comer por lo menos 1 vez a cada uno.   
 
 Al compararlo con el DQN, se puede observar que este es más agresivo en los entornos con modo 0 y 5. Esto se puede explicar, nuevamente, debido a la diferencia en las recompensas del entorno. PPO fue entrenado con un ligero aumento en las recompensas de los puntos chicos, por lo que puede estar priorizando comerlos frente a eliminar enemigos. Esto no es malo, ya que al fin y al cabo lo que verdaderamente cuenta a la hora de ganar la partida es comer todos los puntos chicos, pero eliminar enemigos brinda una gran ventaja para llevar esto a cabo. 
 
----
+
 **Promedio de pasos dados**  
 Al observar esta métrica se evidencia una diferencia notable respecto al comportamiento del agente bajo DQN, en este caso, en los entornos con modo 0 y 2 el agente sobrevive, en promedio, más pasos que en el anterior. Sin embargo, en el caso del entorno con modo 5, el agente sobrevive bastante menos. Esto podría estar relacionado a la cantidad de puntos que consigue en estos entornos, puesto que en los dos primeros el agente puede estar ganando más puntos debido a que está sobreviviendo más tiempo, mientras que en el tercero gana menos puntos debido a que muere más rápido. Con respecto a la variación, esta se mantiene aproximadamente igual en los primeros dos entornos, mientras que para el entorno con modo 5, la variación disminuye bastante con respecto al DQN, esto es posible verlo a través del coeficiente de variación, que es de apenas un 12%.
 
----
+
 **Winrate**  
 Se puede observar gracias a esta métrica que se alcanzó la meta del proyecto, ganar la partida, en dos de los entornos probados. En el entorno con modo 0 ganó 3 de los 100 episodios y en el modo 2 ganó 1 de los 100 episodios. Por otro lado, en el entorno con el modo 5 no ganó ninguna vez. Esto era esperable, ya que el entorno con el modo 0 fue el utilizado para entrenar el modelo, por lo que se esperaba que el agente tuviera un mejor desempeño en él. Además, si comparamos con DQN, PPO gana 1 vez más en dicho ambiente.  
 
@@ -834,17 +867,20 @@ Con respecto al entorno que utiliza el modo 2, el agente presenta una ligera mej
 Si tomamos en cuenta esta métrica, PPO es el claro vencedor para el entorno con el cual se entrenaron los modelos, sin embargo, no por demasiada diferencia frente a DQN. Por otro lado, la diferencia frente a los otros dos es bastante grande, puesto que estos no solo no ganan ninguna vez, si no que ni se acercan a la victoria. 
 
 
----
-
 **Conclusión**  
 
 En conclusión, PPO es un algoritmo muy robusto y adecuado para resolver el problema presentado. Presenta un gran desempeño en todas las métricas y está a la par de DQN, manteniendo su superioridad frente a la solución aleatoria y a Q-learning. En algunas métricas como puntos chicos obtenidos o winrate, el PPO es el claro ganador, mientras que en la métrica integradora, que da una visión del desempeño general, DQN sale ganador. Además, fue posible utilizarlo para completar el objetivo del proyecto, ganar la partida. Si bien el agente logró la victoria en relativamente pocos episodios, fue posible alcanzar el éxito mediante el entrenamiento con PPO.
 
+---
 ## Conclusiones Finales
 
 Teniendo en cuenta los resultados obtenidos, se puede concluir que DQN y PPO son completamente superiores a la solución aleatoria y a Q-Learning. Son algoritmos que se adaptan muy bien al problema y permiten obtener un desempeño extremadamente satisfactorio, e incluso, lograr el objetivo del proyecto, ganar la partida.  
 
 Ambos algoritmos poseen una mayor complejidad, tanto para su implementación como para su uso, sin embargo, vale la pena su utilización debido al beneficio que ofrecen. No se puede elegir uno superior entre los dos, pues ambos tuvieron métricas que mostraban un desempeño similar. Además, ambos demostraron ser relativamente robustos al variar los modos del entorno, manteniendo un desempeño bastante elevado, esto sugiere que logran una generalización aceptable. PPO pareciera haber sido más efectivo en ganar, pues ganó 1 partida más, sin embargo, DQN tuvo un desempeño general mayor. A pesar de esto, las diferencias en las métricas fueron leves, por lo que ambos algoritmos serían una opción a considerar.  
+
+En contraste, tanto la solución aleatoria como Q-Learning demostraron ser insuficientes para abordar eficazmente el entorno de Pac-Man. La política aleatoria sirvió como una línea base útil para comparar el desempeño de los agentes, pero su falta total de estrategia lo llevó a tener resultados muy bajos, sin victorias, y con una gran variabilidad entre ejecuciones. Por su parte, Q-Learning logró una mejora clara respecto al agente aleatorio, mostrando un comportamiento más consistente y mejores métricas en todos los modos. No obstante, sigue siendo limitado para este tipo de entornos complejos, debido principalmente a su incapacidad de manejar espacios de estados amplios y complejos como el que presenta Pac-Man. 
+
+Con respecto a Q-Learning, se dedicó una cantidad considerable de tiempo a ajustar su funcionamiento y a explorar distintas formas de mejorar sus resultados. Sin embargo, a pesar de estos esfuerzos, los resultados obtenidos no estuvieron ni cerca de alcanzar el objetivo del proyecto, lo que refleja una limitación del algoritmo más que una falta de ajuste o experimentación.
 
 Otro aspecto a considerar es el costo computacional. Al entrenar, PPO y DQN requirieron muchas más ejecuciones que sus adversarios, esto se traslada a horas de ejecución, aún utilizando una GPU.  
 
