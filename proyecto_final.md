@@ -122,6 +122,7 @@ $$
 
 Q-Learning tiene baja eficiencia en entornos complejos como Pac-Man ya que requiere estados discretos, pero su inclusión en el proyecto es una etapa fundamental para comprender los principios de Reinforcement Learning como también los conceptos de $Q(s, a)$, balance entre exploración y explotación y su actualización basada en la ecuación de Bellman. Además, es un buen algoritmo para poder realizar comparaciones luego con DQN y PPO, y notar las grandes diferencias de implementación y, obviamente, de resultados obtenidos.
 
+---
 
 ### Deep Q-Networks (DQN)
 
@@ -404,7 +405,18 @@ Por otro lado, las métricas nos permitieron comparar entre los distintos algori
 --- 
 
 ### Resultados
-Los resultados fueron obtenidos sobre 100 ejecuciones por cada combinación.  
+
+Para el **entrenamiento** de los algoritmos, se utilizó el **modo 0**, que es el que viene por defecto. En cada caso, la cantidad de episodios o pasos, según sea el caso, varía. A continuación se muestra una tabla de **entrenamiento y evaluación** por algoritmo para un mayor entendimiento:
+
+| Algoritmo  | ¿Requiere entrenamiento? | Modo de entrenamiento | Cantidad de entrenamiento | Modo de evaluación | Evaluación por modo    |
+| ---------- | ------------------------ | --------------------- | ------------------------- | ------------------ | ---------------------- |
+| Random     | No                       | –                     | –                         | 0, 2, 5            | 100 episodios por modo |
+| Q-Learning | Sí                       | 0                     | 2000 episodios            | 0, 2, 5            | 100 episodios por modo |
+| DQN        | Sí                       | 0                     | 12 millones de pasos      | 0, 2, 5            | 100 episodios por modo |
+| PPO        | Sí                       | 0                     | 12 millones de pasos      | 0, 2, 5            | 100 episodios por modo |
+
+Como se puede observar en la tabla, al momento de la **evaluación**, se realizaron **100 episodios para cada modo** (0, 2, 5), lo cual se encuentra detalladamente explicado en el segundo párrafo de la sección anterior [Descripción de los experimentos](#descripción-de-los-experimentos)
+
 
 #### Random  
 
