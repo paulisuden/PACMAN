@@ -323,8 +323,6 @@ Los hiperparámetros utilizados fueron los siguientes:
 * **Epsilon decay = 0.999**: con cada episodio, epsilon se reduce gradualmente, favoreciendo la explotación de lo aprendido a medida que avanza el entrenamiento.
 * **Epsilon mínimo = 0.01**: evita que el agente deje de explorar por completo, asegurando algo de aleatoriedad en la política final.
 
-Además, el agente fue entrenado durante 2000 episodios, debido a que la extracción de características (análisis de las observaciones visuales para formar el estado discreto) era computacionalmente costosa. Cada entrenamiento completo demoraba aproximadamente 12 horas en finalizar.
-
 Finalmente, tanto las recompensas como los hiperparámetros fueron incorporados en la fórmula principal del algoritmo Q-learning, que actualiza los valores de la Q-table de la siguiente manera:
 
 ```python
@@ -362,7 +360,7 @@ Se realizaron diferentes pruebas para determinar las recompensas y los hiperpar�
 - buffer_size= 200000
 - batch_size = 32  
 
-Además, para poder reducir la complejidad y mejorar el tiempo de entrenamiento, se hizo un preprocesamiento de las observaciones recibidas. Se transformaron a escala de grises y se reescalaron a una dimensión de 84x84. Por último, se apilaron 4 frames por observación con el objetivo de agregar temporalidad a las observaciones. Con respecto a los pasos utilizados para entrenar el modelo, se utilizaron 12.000.000.
+Además, para poder reducir la complejidad y mejorar el tiempo de entrenamiento, se hizo un preprocesamiento de las observaciones recibidas. Se transformaron a escala de grises y se reescalaron a una dimensión de 84x84. Por último, se apilaron 4 frames por observación con el objetivo de agregar temporalidad a las observaciones.
 
 --- 
 
@@ -389,7 +387,7 @@ Se realizaron diferentes pruebas para determinar las recompensas y los hiperpar�
 - learning_rate=2.5e-4,
 - max_grad_norm=0.5,
 
-Nuevamente, se preprocesó las observaciones para reducir la complejidad y mejorar los tiempos de ejecución. El mismo fue similar que el del DQN, se transformó a escala de grises, se reescaló a 84x84, se añadio un canal de profundidad y se apiló 4 frames. Luego, para entrenar el modelo se utilizó la misma cantidad de timesteps que en DQN, es decir, 12.000.000.  
+Nuevamente, se preprocesó las observaciones para reducir la complejidad y mejorar los tiempos de ejecución. El mismo fue similar que el del DQN, se transformó a escala de grises, se reescaló a 84x84, se añadio un canal de profundidad y se apiló 4 frames.
 
 --- 
 
@@ -406,7 +404,7 @@ Por otro lado, las métricas nos permitieron comparar entre los distintos algori
 
 ### Resultados
 
-Para el **entrenamiento** de los algoritmos, se utilizó el **modo 0**, que es el que viene por defecto. En cada caso, la cantidad de episodios o pasos, según sea el caso, varía. A continuación se muestra una tabla de **entrenamiento y evaluación** por algoritmo para un mayor entendimiento:
+Para el **entrenamiento** de los algoritmos, se utilizó el **modo 0**. En cada caso, la cantidad de episodios o pasos, según sea el algoritmo, varía. A continuación se muestra una tabla de **entrenamiento y evaluación** por algoritmo para un mayor entendimiento:
 
 | Algoritmo  | ¿Requiere entrenamiento? | Modo de entrenamiento | Cantidad de entrenamiento | Modo de evaluación | Evaluación por modo    |
 | ---------- | ------------------------ | --------------------- | ------------------------- | ------------------ | ---------------------- |
