@@ -276,7 +276,7 @@ Ahora bien, lo primero que se hace en cada zona es verificar si hay fantasmas. E
 
 En caso de que no haya fantasmas, se prosigue a buscar pellets. Debido a que los pellets, las paredes y Pac-Man comparten tonalidades de color amarillo similares, no es suficiente con verificar únicamente el color de los píxeles. Por eso, además del color, se considera la forma y el contexto del bloque de píxeles para determinar si realmente corresponde a un pellet.
 
-Para ello, se definen las posibles formas que un pellet puede adoptar en la imagen: `(3,1)`, `(1,3)`, `(1,2)`, `(2,1)` y `(2,2)`, ya que los pellets pueden variar levemente en su tamaño. Luego, se realizan tres verificaciones:
+Para ello, se definen los posibles formas que un pellet puede adoptar en la imagen: `(3,1)`, `(1,3)`, `(1,2)`, `(2,1)` y `(2,2)`, ya que los pellets pueden variar levemente en su tamaño. Los pares indican dimensiones en píxeles, en formato alto x ancho. Luego, se realizan tres verificaciones:
 
 1. Primero, se verifica si todos los píxeles dentro del bloque actual son similares (con cierta tolerancia) a alguno de los colores definidos como posibles para los pellets.
 
@@ -385,7 +385,7 @@ Nuevamente, se preprocesó las observaciones para reducir la complejidad y mejor
 ### Descripción de los experimentos
 Se realizaron 3 tipos de experimentos. Los mismos consistieron en la ejecución de los modelos en 3 variaciones del entorno. Esto se realizó de esta manera ya que de esta forma no solo se probaría en exactamente el mismo entorno que se usó para entrenar y los agentes verían características no vistas durante el entrenamiento. Gracias a esto, podemos analizar la capacidad de los mismos para generalizar y no limitamos el análisis al entorno que ya conocen.  
 
-Para los experimentos se realizaron 100 ejecuciones por cada algoritmo (Random, Q-Learning, DQN, PPO) y por cada modo del entorno (0, 2 y 5) con la semilla "2025". El modo 0 del entorno consiste en mantener las velocidades de los fantasmas en los valores por defecto. Por otro lado, el modo 2 sería un "modo fácil", ya que los fantasmas se mueven más lentamente. Por último, el modo 5 sería el "modo difícil" debido a que los fantasmas son mas veloces. 
+Para los experimentos se realizaron 100 ejecuciones por cada algoritmo (Random, Q-Learning, DQN, PPO) y por cada modo del entorno (0, 2 y 5) con la semilla "2025". La semilla se establece únicamente al momento de crear el entorno y garantiza una secuencia reproducible de instancias del mismo. Es decir, en este caso, al fijar la semilla, aseguramos que todos los algoritmos sean evaluados sobre la misma secuencia de entornos, permitiendo una comparación justa entre ellos. Con respecto a los modos del entorno, el 0 consiste en mantener las velocidades de los fantasmas en los valores por defecto. Por otro lado, el modo 2 sería un "modo fácil", ya que los fantasmas se mueven más lentamente. Por último, el modo 5 sería el "modo difícil" debido a que los fantasmas son mas veloces. 
 
 Con estas 100 ejecuciones de cada caso se obtuvieron las métricas mencionadas anteriormente y se analizarán en la siguiente sección. Particularmente, con estos indicadores se buscó evaluar que tan buenos fueron los modelos. Para ello, se tomó en cuenta el objetivo del proyecto, es decir, cuán cerca estuvieron de ganar. Sin embargo, también se midieron otros aspectos, por ejemplo, su capacidad de supervivencia, la cantidad de veces que se ganó o el nivel de agresividad mediante la ingestión de fantasmas.
 
