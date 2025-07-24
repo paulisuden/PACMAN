@@ -100,6 +100,16 @@ Este otro enfoque implica que el agente **debe aprender qué hacer**, es decir, 
 
 ---
 
+### Random
+
+Este primer enfoque consiste en un agente que selecciona una acción aleatoriamente en cada paso, eligiendo entre las posibles direcciones: arriba, abajo, izquierda y derecha. No utiliza ninguna estrategia ni tiene en cuenta el estado actual del juego. Es un comportamiento completamente aleatorio y sin aprendizaje.
+
+#### Justificación de la elección
+
+Este tipo de agente se utiliza como línea base para comparar el rendimiento de algoritmos más sofisticados, como Q-Learning o DQN, y evaluar si realmente aportan mejoras en términos de desempeño.
+
+---
+
 ### Q-Learning
 
 El algoritmo Q-Learning permite aprender una política óptima sin modelo, actualizando la función de acción-valor $Q(s, a)$ directamente: [8]
