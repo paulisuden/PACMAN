@@ -10,12 +10,14 @@
       - [Markov Decision Problem](#markov-decision-problem)
       - [Passive Reinforcement Learning](#passive-reinforcement-learning)
       - [Active Reinforcement Learning](#active-reinforcement-learning)
-    - [Q-Learning](#q-learning)
+    - [Random](#random)
       - [Justificación de la elección](#justificación-de-la-elección)
-    - [Deep Q-Networks (DQN)](#deep-q-networks-dqn)
+    - [Q-Learning](#q-learning)
       - [Justificación de la elección](#justificación-de-la-elección-1)
-    - [Proximal Policy Optimization (PPO)](#proximal-policy-optimization-ppo)
+    - [Deep Q-Networks (DQN)](#deep-q-networks-dqn)
       - [Justificación de la elección](#justificación-de-la-elección-2)
+    - [Proximal Policy Optimization (PPO)](#proximal-policy-optimization-ppo)
+      - [Justificación de la elección](#justificación-de-la-elección-3)
   - [Diseño Experimental](#diseño-experimental)
     - [Métricas utilizadas](#métricas-utilizadas)
       - [Métrica integradora (Fantasmas + Puntos grandes + Puntos chicos)](#métrica-integradora-fantasmas--puntos-grandes--puntos-chicos)
@@ -48,12 +50,12 @@
       - [PPO](#ppo)
     - [Descripción de los experimentos](#descripción-de-los-experimentos)
     - [Resultados](#resultados)
-      - [Random](#random)
+      - [Random](#random-1)
       - [Q-learning](#q-learning-2)
       - [DQN](#dqn-1)
       - [PPO](#ppo-1)
   - [Análisis y Discusión de Resultados](#análisis-y-discusión-de-resultados)
-    - [Random](#random-1)
+    - [Random](#random-2)
     - [Q-Learning](#q-learning-3)
     - [DQN](#dqn-2)
     - [PPO](#ppo-2)
@@ -409,9 +411,9 @@ Para el **entrenamiento** de los algoritmos, se utilizó el **modo 0**. En cada 
 | Algoritmo  | ¿Requiere entrenamiento? | Modo de entrenamiento | Cantidad de entrenamiento | Modo de evaluación | Evaluación por modo    |
 | ---------- | ------------------------ | --------------------- | ------------------------- | ------------------ | ---------------------- |
 | Random     | No                       | –                     | –                         | 0, 2, 5            | 100 episodios por modo |
-| Q-Learning | Sí                       | 0                     | 2000 episodios            | 0, 2, 5            | 100 episodios por modo |
-| DQN        | Sí                       | 0                     | 12 millones de pasos      | 0, 2, 5            | 100 episodios por modo |
-| PPO        | Sí                       | 0                     | 12 millones de pasos      | 0, 2, 5            | 100 episodios por modo |
+| Q-Learning | Sí                       | 0                     | 2000 episodios (12 horas)            | 0, 2, 5            | 100 episodios por modo |
+| DQN        | Sí                       | 0                     | 12 millones de pasos (12 horas)      | 0, 2, 5            | 100 episodios por modo |
+| PPO        | Sí                       | 0                     | 12 millones de pasos (12 horas)      | 0, 2, 5            | 100 episodios por modo |
 
 Como se puede observar en la tabla, al momento de la **evaluación**, se realizaron **100 episodios para cada modo** (0, 2, 5), lo cual se encuentra detalladamente explicado en el segundo párrafo de la sección anterior [Descripción de los experimentos](#descripción-de-los-experimentos)
 
@@ -427,9 +429,9 @@ Como se puede observar en la tabla, al momento de la **evaluación**, se realiza
 
 | Entorno | Promedio métrica integradora | Promedio de puntos chicos ingeridos | Promedio de fantasmas ingeridos | Promedio de pasos dados | Winrate |
 |---------|-------------------------------|-------------------------------------|----------------------------------|--------------------------|---------|
-| modo 0  | 13.28                         | 13.28                               | 0.00                             | 430.58                   | 0       |
-| modo 2  | 38.49                         | 37.13                               | 0.05                             | 900.39                   | 0       |
-| modo 5  | 14.60                         | 14.60                               | 0.00                             | 403.58                   | 0       |
+| Modo 0  | 13.28                         | 13.28                               | 0.00                             | 430.58                   | 0       |
+| Modo 2  | 38.49                         | 37.13                               | 0.05                             | 900.39                   | 0       |
+| Modo 5  | 14.60                         | 14.60                               | 0.00                             | 403.58                   | 0       |
 
 **Tabla resumen de desviaciones estándar de métricas obtenidas**
 
@@ -517,9 +519,9 @@ Como se puede observar en la tabla, al momento de la **evaluación**, se realiza
 
 | Entorno | DE de métrica integradora | DE de puntos chicos ingeridos | DE de fantasmas ingeridos | DE de pasos dados |
 |---------|----------------------------|-------------------------------|----------------------------|-------------------|
-| modo 0  | 9.82                       | 9.82                          | 0.00                       | 165.44            |
-| modo 2  | 12.14                      | 11.81                         | 0.14                       | 1571.79           |
-| modo 5  | 11.23                      | 10.83                         | 0.14                       | 196.19            |
+| Modo 0  | 9.82                       | 9.82                          | 0.00                       | 165.44            |
+| Modo 2  | 12.14                      | 11.81                         | 0.14                       | 1571.79           |
+| Modo 5  | 11.23                      | 10.83                         | 0.14                       | 196.19            |
 
 **Resultados de métrica integradora en 100 episodios en modo 0, 2 y 5**  
 <p align="center">
