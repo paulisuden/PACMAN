@@ -393,8 +393,25 @@ Nuevamente, se preprocesó las observaciones para reducir la complejidad y mejor
 
 --- 
 
-### Descripción de los experimentos
-Se realizaron 3 tipos de experimentos. Los mismos consistieron en la ejecución de los modelos en 3 variaciones del entorno. Esto se realizó de esta manera ya que de esta forma no solo se probaría en exactamente el mismo entorno que se usó para entrenar y los agentes verían características no vistas durante el entrenamiento. Gracias a esto, podemos analizar la capacidad de los mismos para generalizar y no limitamos el análisis al entorno que ya conocen.  
+### Descripción de los experimentos  
+El entorno utilizado posee varios modos. Para este proyecto se trabajó principalmente con tres de ellos: el modo 0, el 2 y el 5. Las características de estos fueron mencionadas anteriormente, pero se resumen a continuación:
+- Modo 0: Los fantasmas y Pac-Man se mueven a velocidad normal.
+- Modo 2: Los fantasmas se mueven a menor velocidad. 
+- Modo 5: Los fantasmas se mueven a mayor velocidad.  
+  
+Para el **entrenamiento** de los algoritmos, se utilizó el **modo 0**. En cada caso, la cantidad de episodios o pasos de entrenamiento, según sea el algoritmo, varía. A continuación se muestra una tabla de **entrenamiento y evaluación** por algoritmo para un mayor entendimiento:
+
+| Algoritmo  | ¿Requiere entrenamiento? | Modo de entrenamiento | Cantidad de entrenamiento | Modo de evaluación | Evaluación por modo    |
+| ---------- | ------------------------ | --------------------- | ------------------------- | ------------------ | ---------------------- |
+| Random     | No                       | –                     | –                         | 0, 2, 5            | 100 episodios por modo |
+| Q-Learning | Sí                       | 0                     | 2000 episodios (~12 horas)            | 0, 2, 5            | 100 episodios por modo |
+| DQN        | Sí                       | 0                     | 12 millones de pasos (~12 horas)      | 0, 2, 5            | 100 episodios por modo |
+| PPO        | Sí                       | 0                     | 12 millones de pasos (~12 horas)      | 0, 2, 5            | 100 episodios por modo |
+
+Como se puede observar en la tabla, al momento de la **evaluación**, se ejecutaron **100 episodios para cada modo** (0, 2, 5). Estos experimentos se detallan a continuación.
+
+
+Se realizaron 3 tipos de experimentos. Los mismos consistieron en la ejecución de los modelos en 3 variaciones del entorno. Esto se realizó de esta manera ya que de esta forma no se probaría solo en exactamente el mismo entorno que se usó para entrenar y los agentes verían características no vistas durante el entrenamiento. Gracias a esto, podemos analizar la capacidad de los mismos para generalizar y no limitamos el análisis al entorno que ya conocen.  
 
 Para los experimentos se realizaron 100 ejecuciones por cada algoritmo (Random, Q-Learning, DQN, PPO) y por cada modo del entorno (0, 2 y 5) con la semilla "2025". La semilla se establece únicamente al momento de crear el entorno y garantiza una secuencia reproducible de instancias del mismo. Es decir, en este caso, al fijar la semilla, aseguramos que todos los algoritmos sean evaluados sobre la misma secuencia de entornos, permitiendo una comparación justa entre ellos. Con respecto a los modos del entorno, el 0 consiste en mantener las velocidades de los fantasmas en los valores por defecto. Por otro lado, el modo 2 sería un "modo fácil", ya que los fantasmas se mueven más lentamente. Por último, el modo 5 sería el "modo difícil" debido a que los fantasmas son mas veloces. 
 
@@ -405,18 +422,6 @@ Por otro lado, las métricas nos permitieron comparar entre los distintos algori
 --- 
 
 ### Resultados
-
-Para el **entrenamiento** de los algoritmos, se utilizó el **modo 0**. En cada caso, la cantidad de episodios o pasos, según sea el algoritmo, varía. A continuación se muestra una tabla de **entrenamiento y evaluación** por algoritmo para un mayor entendimiento:
-
-| Algoritmo  | ¿Requiere entrenamiento? | Modo de entrenamiento | Cantidad de entrenamiento | Modo de evaluación | Evaluación por modo    |
-| ---------- | ------------------------ | --------------------- | ------------------------- | ------------------ | ---------------------- |
-| Random     | No                       | –                     | –                         | 0, 2, 5            | 100 episodios por modo |
-| Q-Learning | Sí                       | 0                     | 2000 episodios (12 horas)            | 0, 2, 5            | 100 episodios por modo |
-| DQN        | Sí                       | 0                     | 12 millones de pasos (12 horas)      | 0, 2, 5            | 100 episodios por modo |
-| PPO        | Sí                       | 0                     | 12 millones de pasos (12 horas)      | 0, 2, 5            | 100 episodios por modo |
-
-Como se puede observar en la tabla, al momento de la **evaluación**, se realizaron **100 episodios para cada modo** (0, 2, 5), lo cual se encuentra detalladamente explicado en el segundo párrafo de la sección anterior [Descripción de los experimentos](#descripción-de-los-experimentos)
-
 
 #### Random  
 
@@ -504,7 +509,13 @@ Como se puede observar en la tabla, al momento de la **evaluación**, se realiza
 
 <div align="center">
   <img src="./images/q-learning.gif" width="480" alt="Q-learning" />
-</div>  
+</div>   
+
+
+**Gráfico de curva de aprendizaje de Q-Learning**  
+<div align="center">
+  <img src="./code/q-learning/graphics/curvaAprendizaje.jpg" width="480" alt="Q-learning-curva" />
+</div>   
 
 **Tabla resumen de promedios de métricas obtenidas**
 
